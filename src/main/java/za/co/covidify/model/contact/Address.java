@@ -5,54 +5,62 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Table;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 @Entity
 @Cacheable
+@Table(name = "ADDRESS")
 public class Address extends PanacheEntity {
 
   @Column(name = "ADDRESS_NAME", length = 100)
-  private String name;
+  public String name;
 
   @Column(name = "UNIT_NUMBER", length = 60)
-  private String unitNumber;
+  public String unitNumber;
 
   @Column(name = "COMPLEX")
-  private String complex;
+  public String complex;
 
   @Column(name = "STREET", length = 60)
-  private String street;
+  public String street;
 
   @Column(name = "SUBURB", length = 60)
-  private String suburb;
+  public String suburb;
 
   @Column(name = "CITY", length = 60)
-  private String city;
+  public String city;
 
   @Column(name = "PROVINCE", length = 60)
-  private String province;
+  public String province;
 
   @Column(name = "POSTAL_CODE", length = 10)
-  private String postalCode;
+  public String postalCode;
 
   @Column(name = "COUNTRY", length = 60)
-  private String country;
+  public String country;
 
   @Column(name = "STREET_NUMBER")
-  private String streetNumber;
+  public String streetNumber;
 
   @Column(name = "STREET_NAME", length = 60)
-  private String streetName;
+  public String streetName;
 
   @Enumerated(EnumType.ORDINAL)
   @Column(name = "ADDRESS_TYPE", nullable = false)
-  private AddressType type;
+  public AddressType type;
 
   @Column(name = "POSTAL_SAME_AS_PYSICAL")
-  private Boolean postalSameAsPhysical = false;
+  public Boolean postalSameAsPhysical = false;
 
   @Column(name = "WORK_SAME_AS_PYSICAL")
-  private Boolean workSameAsPhysical = false;
+  public Boolean workSameAsPhysical = false;
 
+  public Address() {
+  }
+
+  public Address(String name) {
+    this.name = name;
+  }
 }
