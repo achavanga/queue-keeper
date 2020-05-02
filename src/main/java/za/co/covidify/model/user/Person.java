@@ -9,18 +9,27 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import za.co.covidify.model.contact.Address;
 
 @Entity
 @Cacheable
 @Table(name = "PERSON")
-public class Person extends PanacheEntity {
+public class Person extends PanacheEntityBase {
+
+  @Id
+  @SequenceGenerator(name = "personSequence", sequenceName = "person_id_seq", allocationSize = 1, initialValue = 2)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "personSequence")
+  public Long id;
 
   @Column(name = "NAME", nullable = false, length = 100)
   public String name;
@@ -60,9 +69,5 @@ public class Person extends PanacheEntity {
   public Set<Address> addresses = new HashSet<>();
 
   public Person() {
-  }
-
-  public Person(String name) {
-    this.name = name;
   }
 }

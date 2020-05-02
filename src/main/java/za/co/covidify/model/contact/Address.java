@@ -5,14 +5,23 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
 @Entity
 @Cacheable
 @Table(name = "ADDRESS")
-public class Address extends PanacheEntity {
+public class Address extends PanacheEntityBase {
+
+  @Id
+  @SequenceGenerator(name = "addressSequence", sequenceName = "address_id_seq", allocationSize = 1, initialValue = 2)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "addressSequence")
+  public Long id;
 
   @Column(name = "ADDRESS_NAME", length = 100)
   public String name;
@@ -47,7 +56,7 @@ public class Address extends PanacheEntity {
   @Column(name = "STREET_NAME", length = 60)
   public String streetName;
 
-  @Enumerated(EnumType.ORDINAL)
+  @Enumerated(EnumType.STRING)
   @Column(name = "ADDRESS_TYPE", nullable = false)
   public AddressType type;
 
@@ -60,7 +69,4 @@ public class Address extends PanacheEntity {
   public Address() {
   }
 
-  public Address(String name) {
-    this.name = name;
-  }
 }

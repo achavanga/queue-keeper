@@ -1,6 +1,6 @@
 package za.co.covidify.model.user;
 
-public enum Status {
+public enum UserStatus {
   ACTIVE,
   SUSPENDED,
   OTHER

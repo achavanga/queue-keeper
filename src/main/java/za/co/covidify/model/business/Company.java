@@ -8,20 +8,29 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import za.co.covidify.model.contact.Address;
 import za.co.covidify.model.user.Person;
 
 @Entity
 @Cacheable
 @Table(name = "COMPANY")
-public class Company extends PanacheEntity {
+public class Company extends PanacheEntityBase {
+
+  @Id
+  @SequenceGenerator(name = "companySequence", sequenceName = "company_id_seq", allocationSize = 1, initialValue = 2)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "companySequence")
+  public Long id;
 
   @Column(name = "COMPANY_NAME", length = 100)
   public String companyName;
