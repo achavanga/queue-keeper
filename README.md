@@ -75,10 +75,11 @@ Navigate to:
 * No need to add Getters and Setter in entity classes.
 * Decided to extend PanacheEntityBase in my entities instead of PanacheEntity because the entity/table IDs where generated from the same hibernate_sequence. Now each entity has its on defined ID sequencing e.g :
 
-> 
+```
 @Id
-  @SequenceGenerator(name = "userSequence", sequenceName = "user_id_seq", allocationSize = 1, initialValue = 2)
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userSequence")
-  public Long id;
+@SequenceGenerator(name = "userSequence", sequenceName = "user_id_seq", allocationSize = 1, initialValue = 2)
+@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userSequence")
+public Long id;
+```
 
- 
+   
