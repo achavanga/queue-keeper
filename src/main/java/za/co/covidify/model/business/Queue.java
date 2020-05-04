@@ -16,7 +16,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import za.co.covidify.model.user.Person;
+import za.co.covidify.model.person.Person;
 
 @Entity
 @Cacheable

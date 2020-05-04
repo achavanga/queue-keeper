@@ -1,4 +1,4 @@
-package za.co.covidify.model.user;
+package za.co.covidify.model.person;
 
 import static javax.transaction.Transactional.TxType.REQUIRED;
 import static javax.transaction.Transactional.TxType.SUPPORTS;
@@ -15,30 +15,26 @@ import org.jboss.logging.Logger;
 
 import io.quarkus.panache.common.Sort;
 import za.co.covidify.model.contact.Address;
-import za.co.covidify.model.person.Person;
+import za.co.covidify.model.user.SysUser;
 
 @ApplicationScoped
 @Transactional(SUPPORTS)
-public class SysUserService {
-  private static final Logger LOGGER = Logger.getLogger(SysUserService.class);
+public class PersonService {
 
-  public List<SysUser> findAllUsers() {
-    return SysUser.listAll(Sort.by("person.surname"));
+  private static final Logger LOGGER = Logger.getLogger(Person.class);
+
+  public List<Person> findAllPersons() {
+    return Person.listAll(Sort.by("surname"));
   }
 
-  public SysUser findUserById(Long id) {
-    return SysUser.findById(id);
-
+  public Person findPersonById(Long id) {
+    return Person.findById(id);
   }
 
   @Transactional(REQUIRED)
-  public SysUser createUser(SysUser user) {
-    Person person;
-    if (user == null || user.id != null) {
-      throw new WebApplicationException("Id was invalidly set on request.", 422);
-    }
-    if (user.person.id == null || user.person.id == 0) {
-      person = user.person;
+  public Person createUser(Person person) {
+
+    if (person.id == null || person.id == 0) {
       Set<Address> addresses = new HashSet<>();
       for (Address address : person.addresses) {
         if (address.id == null || address.id == 0) {
@@ -50,16 +46,14 @@ public class SysUserService {
         addresses.add(address);
       }
       person.addresses = addresses;
-      Person.persist(person);
     }
     else {
-      person = Person.findById(user.person.id);
+      person = Person.findById(person.id);
     }
 
-    user.person = person;
-    SysUser.persist(user);
+    Person.persist(person);
 
-    return user;
+    return person;
   }
 
   @Transactional(REQUIRED)
@@ -78,5 +72,4 @@ public class SysUserService {
 
     return user;
   }
-
 }

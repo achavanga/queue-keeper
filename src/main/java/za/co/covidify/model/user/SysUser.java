@@ -20,6 +20,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import za.co.covidify.model.person.Person;
 
 @Entity
 @Cacheable
@@ -55,8 +56,5 @@ public class SysUser extends PanacheEntityBase {
   @Enumerated(EnumType.STRING)
   @Column(name = "USER_STATUS", nullable = false)
   public UserStatus status = UserStatus.ACTIVE;
-
-  public SysUser() {
-  }
 
 }

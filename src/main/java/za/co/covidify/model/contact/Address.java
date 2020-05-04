@@ -3,8 +3,6 @@ package za.co.covidify.model.contact;
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,14 +24,11 @@ public class Address extends PanacheEntityBase {
   @Column(name = "ADDRESS_NAME", length = 100)
   public String name;
 
-  @Column(name = "UNIT_NUMBER", length = 60)
-  public String unitNumber;
+  @Column(name = "ADDRESS_LINE1", length = 60)
+  public String addressLine;
 
-  @Column(name = "COMPLEX")
-  public String complex;
-
-  @Column(name = "STREET", length = 60)
-  public String street;
+  @Column(name = "ADDRESS_LINE2")
+  public String addresLine2;
 
   @Column(name = "SUBURB", length = 60)
   public String suburb;
@@ -41,32 +36,10 @@ public class Address extends PanacheEntityBase {
   @Column(name = "CITY", length = 60)
   public String city;
 
-  @Column(name = "PROVINCE", length = 60)
-  public String province;
-
   @Column(name = "POSTAL_CODE", length = 10)
   public String postalCode;
 
-  @Column(name = "COUNTRY", length = 60)
-  public String country;
-
-  @Column(name = "STREET_NUMBER")
-  public String streetNumber;
-
-  @Column(name = "STREET_NAME", length = 60)
-  public String streetName;
-
-  @Enumerated(EnumType.STRING)
-  @Column(name = "ADDRESS_TYPE", nullable = false)
-  public AddressType type;
-
-  @Column(name = "POSTAL_SAME_AS_PYSICAL")
-  public Boolean postalSameAsPhysical = false;
-
-  @Column(name = "WORK_SAME_AS_PYSICAL")
-  public Boolean workSameAsPhysical = false;
-
-  public Address() {
-  }
+  @Column(name = "LOCATION_PIN", length = 60)
+  public String locationPin;
 
 }
