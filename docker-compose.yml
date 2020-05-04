@@ -1,0 +1,20 @@
+version: '3.1'
+
+services:
+  quarkus:
+   build:
+     context: .
+     dockerfile: src/main/docker/Dockerfile.jvm
+   depends_on:
+     - postgres
+   ports:
+     - 8080:8080
+
+  postgres:
+    image: postgres:10.5
+    environment:
+      - POSTGRES_PASSWORD=Corona2020
+      - POSTGRES_USER=abelc
+      - POSTGRES_DB=queue_keeper
+    ports:
+      - "5432:5432"

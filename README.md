@@ -73,7 +73,7 @@ Navigate to:
 ## Lesson Learned
 * When creating entity classes using Panache make sure all variables are public and not private. If you mark them private your API will not bring back an value. You will only see the entity id(s) which is already public as it comes from PanacheEntity.
 * No need to add Getters and Setter in entity classes.
-* Decided to extend PanacheEntityBase in my entities instead of PanacheEntity because the entity/table IDs where generated from the same hibernate_sequence. Now each entity has its on defined ID sequencing e.g :
+* Advanced use cases may require a custom ID strategy, which can by done by extending PanacheEntityBase instead of PanacheEntity, and declaring a public id field with the necessary policy. For example:
 
 ```
 @Id
