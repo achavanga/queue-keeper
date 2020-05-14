@@ -7,7 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -49,8 +48,12 @@ public class Queue extends PanacheEntityBase {
   @JsonFormat(pattern = "yyyy/MM/dd HH:mm")
   public LocalDate processedDateTime;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne
   @JoinColumn(name = "PERSON_ID")
   private Person person;
+
+  @ManyToOne
+  @JoinColumn(name = "QUEUE_HEADER_ID")
+  private QueueHeader queueHeader;
 
 }

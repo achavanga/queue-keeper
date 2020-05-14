@@ -2,9 +2,7 @@ package za.co.covidify.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
@@ -15,12 +13,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
@@ -53,11 +52,12 @@ public class Person extends PanacheEntityBase {
   @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
   public LocalDate dateCreated;
 
-  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-  @JoinTable(name = "PERSON_ADDRESS", joinColumns = @JoinColumn(name = "ADDRESS_ID"), inverseJoinColumns = @JoinColumn(name = "PERSON_ID"))
-  public Set<Address> addresses = new HashSet<>();
+  @OneToOne(optional = false)
+  @JoinColumn(name = "ADDRESS_ID")
+  public Address address;
 
-  @OneToMany(mappedBy = "person")
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "person", fetch = FetchType.EAGER)
+  @JsonIgnore
   private List<Queue> queue = new ArrayList<>();
 
 }

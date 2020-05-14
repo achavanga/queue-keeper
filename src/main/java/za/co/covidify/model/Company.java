@@ -1,6 +1,8 @@
 package za.co.covidify.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Cacheable;
@@ -17,6 +19,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
@@ -38,11 +42,12 @@ public class Company extends PanacheEntityBase {
 
   @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   @JoinTable(name = "COMPANY_EMPLOYEE", joinColumns = @JoinColumn(name = "PERSON_ID"), inverseJoinColumns = @JoinColumn(name = "COMPANY_ID"))
+  @JsonIgnore
   public Set<Person> companyEmployee = new HashSet<>();
 
-  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-  @JoinTable(name = "COMPANY_ADDRESS", joinColumns = @JoinColumn(name = "ADDRESS_ID"), inverseJoinColumns = @JoinColumn(name = "COMPANY_ID"))
-  public Set<Address> addresses = new HashSet<>();
+  @OneToOne(optional = false)
+  @JoinColumn(name = "ADDRESS_ID")
+  public Address address;
 
   @Column(name = "EMAIL_ADDRESS", length = 100)
   public String emailAddress;
@@ -53,8 +58,12 @@ public class Company extends PanacheEntityBase {
   @Column(name = "PHONE", length = 20)
   public String phone;
 
-  @OneToOne(targetEntity = Person.class, cascade = { CascadeType.ALL }, fetch = FetchType.EAGER, optional = false)
+  @OneToOne(optional = false)
   @JoinColumn(name = "CONTACT_PERSON_ID")
   public Person contactPerson;
+
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "company", fetch = FetchType.EAGER)
+  @JsonIgnore
+  private List<QueueHeader> queueHeader = new ArrayList<>();
 
 }
