@@ -1,14 +1,15 @@
-package za.co.covidify.model.person;
+package za.co.covidify.model;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,8 +20,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import za.co.covidify.model.contact.Address;
 
 @Entity
 @Cacheable
@@ -32,18 +34,11 @@ public class Person extends PanacheEntityBase {
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "personSequence")
   public Long id;
 
-  @Column(name = "NAME", nullable = false, length = 100)
+  @Column(name = "NAME", length = 100)
   public String name;
 
-  @Column(name = "SURNAME", nullable = false, length = 100)
+  @Column(name = "SURNAME", length = 100)
   public String surname;
-
-  @Column(name = "TITLE", length = 10)
-  @Enumerated(EnumType.STRING)
-  public Title title = Title.Other;
-
-  @Column(name = "DISPLAY_NAME", nullable = false, length = 100)
-  public String displayName;
 
   @Column(name = "EMAIL_ADDRESS", length = 100)
   public String emailAddress;
@@ -54,8 +49,15 @@ public class Person extends PanacheEntityBase {
   @Column(name = "ID_NUMBER", length = 50)
   public String idNumber;
 
+  @Column(name = "DATE_CREATED")
+  @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
+  public LocalDate dateCreated;
+
   @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   @JoinTable(name = "PERSON_ADDRESS", joinColumns = @JoinColumn(name = "ADDRESS_ID"), inverseJoinColumns = @JoinColumn(name = "PERSON_ID"))
   public Set<Address> addresses = new HashSet<>();
+
+  @OneToMany(mappedBy = "person")
+  private List<Queue> queue = new ArrayList<>();
 
 }

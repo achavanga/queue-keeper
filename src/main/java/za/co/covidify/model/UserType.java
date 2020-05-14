@@ -1,4 +1,4 @@
-package za.co.covidify.model.user;
+package za.co.covidify.model;
 
 public enum UserType {
   MANAGER("Manage of a company"),

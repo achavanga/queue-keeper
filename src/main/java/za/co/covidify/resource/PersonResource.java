@@ -1,16 +1,22 @@
-package za.co.covidify.model.person;
+package za.co.covidify.resource;
 
 import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.json.Json;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.ExceptionMapper;
+import javax.ws.rs.ext.Provider;
 
 import org.eclipse.microprofile.metrics.MetricUnits;
 import org.eclipse.microprofile.metrics.annotation.Counted;
@@ -23,6 +29,9 @@ import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.logging.Logger;
+
+import za.co.covidify.model.Person;
+import za.co.covidify.services.PersonService;
 
 @Path("/api/v1/Person")
 @ApplicationScoped
@@ -43,7 +52,7 @@ public class PersonResource {
   @Timed(name = "timeGetAllPersons", description = "Times how long it takes to invoke the getAllPersons method", unit = MetricUnits.MILLISECONDS)
   public List<Person> getAllPersons() {
     List<Person> persons = personService.findAllPersons();
-    LOGGER.info("Total number of Persons " + persons);
+    LOGGER.info("Total number of Persons " + persons.size());
     return persons;
   }
 
@@ -64,5 +73,35 @@ public class PersonResource {
       LOGGER.debug("No Person found with id " + id);
       return Response.noContent().build();
     }
+  }
+
+  @POST
+  @Operation(summary = "Create a new Person ")
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Person.class)))
+  @Counted(name = "countCreatePerson", description = "Counts how many times the createPerson method has been invoked")
+  @Timed(name = "timeGetCreatePerson", description = "Times how long it takes to invoke the createPerson method", unit = MetricUnits.MILLISECONDS)
+  public Response createPerson(Person person) {
+    person = personService.createPerson(person);
+    return Response.ok(person).status(201).build();
+  }
+
+  @PUT
+  public Response updatePerson(Person person) {
+    person = personService.updatePerson(person);
+    return Response.ok(person).status(200).build();
+  }
+
+  @Provider
+  public static class ErrorMapper implements ExceptionMapper<Exception> {
+
+    @Override
+    public Response toResponse(Exception exception) {
+      int code = 500;
+      if (exception instanceof WebApplicationException) {
+        code = ((WebApplicationException) exception).getResponse().getStatus();
+      }
+      return Response.status(code).entity(Json.createObjectBuilder().add("Error ", exception.getMessage()).add("Code ", code).build()).build();
+    }
+
   }
 }

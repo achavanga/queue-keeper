@@ -1,4 +1,4 @@
-package za.co.covidify.model.person;
+package za.co.covidify.model;
 
 public enum Title {
   MR,

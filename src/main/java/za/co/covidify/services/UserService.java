@@ -1,0 +1,55 @@
+package za.co.covidify.services;
+
+import static javax.transaction.Transactional.TxType.REQUIRED;
+import static javax.transaction.Transactional.TxType.SUPPORTS;
+
+import java.util.List;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.transaction.Transactional;
+import javax.ws.rs.WebApplicationException;
+
+import org.jboss.logging.Logger;
+
+import io.quarkus.panache.common.Sort;
+import za.co.covidify.model.User;
+
+@ApplicationScoped
+@Transactional(SUPPORTS)
+public class UserService {
+
+  private static final Logger LOGGER = Logger.getLogger(UserService.class);
+
+  public List<User> findAllUsers() {
+    return User.listAll(Sort.by("person.surname"));
+  }
+
+  public User findUserById(Long id) {
+    return User.findById(id);
+
+  }
+
+  @Transactional(REQUIRED)
+  public User createUser(User user) {
+    if (user == null) {
+      throw new WebApplicationException("Invalid request set on request.", 422);
+    }
+    User.persist(user);
+    return user;
+  }
+
+  @Transactional(REQUIRED)
+  public User updateUser(User user) {
+    if (user == null || user.id == null) {
+      throw new WebApplicationException("User was not set on request.", 422);
+    }
+    User entity = User.findById(user.id);
+
+    if (entity == null) {
+      throw new WebApplicationException("User with id of " + user.id + " does not exist.", 404);
+    }
+    entity = user;
+    return user;
+  }
+
+}

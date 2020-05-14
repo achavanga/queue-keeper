@@ -1,22 +1,24 @@
-package za.co.covidify.model.business;
+package za.co.covidify.model;
 
 import java.time.LocalDate;
 
 import javax.persistence.Cacheable;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import za.co.covidify.model.person.Person;
 
 @Entity
 @Cacheable
@@ -35,11 +37,20 @@ public class Queue extends PanacheEntityBase {
     return String.format("%010d", this.id);
   }
 
-  @OneToOne(targetEntity = Person.class, cascade = { CascadeType.ALL }, fetch = FetchType.EAGER, optional = false)
-  @JoinColumn(name = "PERSON_ID")
-  public Person person;
+  @Enumerated(EnumType.STRING)
+  @Column(name = "QUEUE_STATUS", nullable = false)
+  public QueueStatus status = QueueStatus.ACTIVE;
 
-  @Column(name = "QUEUE_DATE_TIME")
+  @Column(name = "QUEUE_DATE")
+  @JsonFormat(pattern = "yyyy/MM/dd HH:mm")
   public LocalDate queueDateTime;
+
+  @Column(name = "PROCESSED_DATE")
+  @JsonFormat(pattern = "yyyy/MM/dd HH:mm")
+  public LocalDate processedDateTime;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "PERSON_ID")
+  private Person person;
 
 }

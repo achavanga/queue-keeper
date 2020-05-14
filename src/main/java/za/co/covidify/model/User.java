@@ -1,8 +1,7 @@
-package za.co.covidify.model.user;
+package za.co.covidify.model;
 
 import java.time.LocalDate;
 
-import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,15 +16,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import za.co.covidify.model.person.Person;
 
 @Entity
 @Cacheable
 @Table(name = "SYS_USER")
-public class SysUser extends PanacheEntityBase {
+public class User extends PanacheEntityBase {
 
   @Id
   @SequenceGenerator(name = "userSequence", sequenceName = "user_id_seq", allocationSize = 1, initialValue = 2)
@@ -38,11 +37,8 @@ public class SysUser extends PanacheEntityBase {
   @Column(name = "PASSWORD", length = 100)
   public String password;
 
-  @Transient
-  @JsonbTransient
-  public Integer incorrectPasswordCounter;
-
   @Column(name = "LAST_SIGNED_IN")
+  @JsonFormat(pattern = "yyyy/MM/dd HH:mm")
   public LocalDate lastSignedIn;
 
   @Enumerated(EnumType.STRING)

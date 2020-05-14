@@ -1,4 +1,4 @@
-package za.co.covidify.model.user;
+package za.co.covidify.resource;
 
 import java.util.List;
 
@@ -30,38 +30,41 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.logging.Logger;
 
+import za.co.covidify.model.User;
+import za.co.covidify.services.UserService;
+
 @Path("/api/v1/user")
 @ApplicationScoped
 @Produces("application/json")
 @Consumes("application/json")
 @Tag(name = "User Api", description = "User details operations.")
-public class SysUserResource {
-  private static final Logger LOGGER = Logger.getLogger(SysUserResource.class);
+public class UserResource {
+  private static final Logger LOGGER = Logger.getLogger(UserResource.class);
 
   @Inject
-  SysUserService userService;
+  UserService userService;
 
   @GET
   @Operation(summary = "Returns all the users from the database")
-  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = SysUser.class, type = SchemaType.ARRAY)))
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = User.class, type = SchemaType.ARRAY)))
   @APIResponse(responseCode = "204", description = "No users found")
   @Counted(name = "countGetAllUsers", description = "Counts how many times the getAllUsers method has been invoked")
   @Timed(name = "timeGetAllUsers", description = "Times how long it takes to invoke the getAllUsers method", unit = MetricUnits.MILLISECONDS)
-  public List<SysUser> getAllUsers() {
-    List<SysUser> users = userService.findAllUsers();
-    LOGGER.info("Total number of users " + users);
+  public List<User> getAllUsers() {
+    List<User> users = userService.findAllUsers();
+    LOGGER.info("Total number of users " + users.size());
     return users;
   }
 
   @GET
   @Path("/{id}")
   @Operation(summary = "Returns a user for a given identifier")
-  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = SysUser.class)))
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = User.class)))
   @APIResponse(responseCode = "204", description = "The user is not found for a given identifier")
   @Counted(name = "countGetUser", description = "Counts how many times the getUser method has been invoked")
   @Timed(name = "timeGetUser", description = "Times how long it takes to invoke the getUser method", unit = MetricUnits.MILLISECONDS)
   public Response getUser(@Parameter(description = "User identifier", required = true) @PathParam("id") Long id) {
-    SysUser user = userService.findUserById(id);
+    User user = userService.findUserById(id);
     if (user != null) {
       LOGGER.debug("Found user " + user);
       return Response.ok(user).build();
@@ -74,16 +77,16 @@ public class SysUserResource {
 
   @POST
   @Operation(summary = "Create a new user ")
-  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = SysUser.class)))
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = User.class)))
   @Counted(name = "countCreateUser", description = "Counts how many times the createUser method has been invoked")
   @Timed(name = "timeGetCreateUser", description = "Times how long it takes to invoke the createUser method", unit = MetricUnits.MILLISECONDS)
-  public Response createUser(SysUser user) {
+  public Response createUser(User user) {
     user = userService.createUser(user);
     return Response.ok(user).status(201).build();
   }
 
   @PUT
-  public Response updateUser(SysUser user) {
+  public Response updateUser(User user) {
     user = userService.updateUser(user);
     return Response.ok(user).status(200).build();
   }

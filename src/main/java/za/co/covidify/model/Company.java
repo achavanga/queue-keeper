@@ -1,4 +1,4 @@
-package za.co.covidify.model.business;
+package za.co.covidify.model;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,8 +19,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import za.co.covidify.model.contact.Address;
-import za.co.covidify.model.person.Person;
 
 @Entity
 @Cacheable
@@ -32,7 +30,7 @@ public class Company extends PanacheEntityBase {
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "companySequence")
   public Long id;
 
-  @Column(name = "COMPANY_NAME", length = 100)
+  @Column(name = "COMPANY_NAME", nullable = false, length = 100)
   public String companyName;
 
   @Column(name = "COMPANY_WEBSITE_URL", length = 200)
