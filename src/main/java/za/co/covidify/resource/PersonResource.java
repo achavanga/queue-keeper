@@ -1,7 +1,5 @@
 package za.co.covidify.resource;
 
-import java.util.List;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.json.Json;
@@ -50,10 +48,8 @@ public class PersonResource {
   @APIResponse(responseCode = "204", description = "No Persons found")
   @Counted(name = "countGetAllPersons", description = "Counts how many times the getAllPersons method has been invoked")
   @Timed(name = "timeGetAllPersons", description = "Times how long it takes to invoke the getAllPersons method", unit = MetricUnits.MILLISECONDS)
-  public List<Person> getAllPersons() {
-    List<Person> persons = personService.findAllPersons();
-    LOGGER.info("Total number of Persons " + persons.size());
-    return persons;
+  public Response getAllPersons() {
+    return Response.ok(personService.findAllPersons()).build();
   }
 
   @GET

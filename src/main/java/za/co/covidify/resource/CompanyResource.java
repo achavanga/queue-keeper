@@ -1,7 +1,5 @@
 package za.co.covidify.resource;
 
-import java.util.List;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.json.Json;
@@ -50,10 +48,8 @@ public class CompanyResource {
   @APIResponse(responseCode = "204", description = "No Companys found")
   @Counted(name = "countGetAllCompanys", description = "Counts how many times the getAllCompany method has been invoked")
   @Timed(name = "timeGetAllCompanys", description = "Times how long it takes to invoke the getAllCompanys method", unit = MetricUnits.MILLISECONDS)
-  public List<Company> getAllCompanys() {
-    List<Company> company = companyService.findAllCompany();
-    LOGGER.info("Total number of Companys " + company.size());
-    return company;
+  public Response getAllCompanys() {
+    return Response.ok(companyService.findAllCompany()).build();
   }
 
   @GET

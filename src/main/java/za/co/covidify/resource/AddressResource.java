@@ -1,7 +1,5 @@
 package za.co.covidify.resource;
 
-import java.util.List;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.json.Json;
@@ -50,10 +48,8 @@ public class AddressResource {
   @APIResponse(responseCode = "204", description = "No Addresss found")
   @Counted(name = "countGetAllAddresss", description = "Counts how many times the getAllAddress method has been invoked")
   @Timed(name = "timeGetAllAddresss", description = "Times how long it takes to invoke the getAllAddresss method", unit = MetricUnits.MILLISECONDS)
-  public List<Address> getAllAddresss() {
-    List<Address> address = addressService.findAllAddress();
-    LOGGER.info("Total number of Addresss " + address.size());
-    return address;
+  public Response getAllAddresss() {
+    return Response.ok(addressService.findAllAddress()).build();
   }
 
   @GET

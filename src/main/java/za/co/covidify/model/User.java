@@ -3,6 +3,7 @@ package za.co.covidify.model;
 import java.time.LocalDateTime;
 
 import javax.json.bind.annotation.JsonbDateFormat;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -33,7 +34,7 @@ public class User extends PanacheEntityBase {
   @Column(name = "USER_NAME", nullable = false, length = 60, unique = true)
   public String userName;
 
-  @Column(name = "PASSWORD", length = 100)
+  @Column(name = "PASSWORD", length = 150)
   public String password;
 
   @Column(name = "LAST_SIGNED_IN")
@@ -51,5 +52,14 @@ public class User extends PanacheEntityBase {
   @Enumerated(EnumType.STRING)
   @Column(name = "USER_STATUS", nullable = false)
   public UserStatus status = UserStatus.ACTIVE;
+
+  @JsonbTransient
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
 
 }

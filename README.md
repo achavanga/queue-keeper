@@ -12,6 +12,8 @@ While the code is surprisingly simple, under the hood this is using:
  - The high performance Agroal connection pool
  - Infinispan based caching
  - All safely coordinated by the Narayana Transaction Manager
+ - Elytron security for encodeing password
+ - Wildfly ModularCrypt for decoding the password.
 
 ## Requirements
 
@@ -82,4 +84,5 @@ Navigate to:
 public Long id;
 ```
 * Had to change from @JsonIgnore to @JsonbTransient as I was getting a lot of fetch errors with error ""RESTEASY008205: JSON Binding serialization error Unable to serialize property ''".
+* Make sure you are using json-b and not jackson which might have a different ignore annotation.
    

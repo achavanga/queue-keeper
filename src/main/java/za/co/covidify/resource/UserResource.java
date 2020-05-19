@@ -1,7 +1,5 @@
 package za.co.covidify.resource;
 
-import java.util.List;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.json.Json;
@@ -50,10 +48,8 @@ public class UserResource {
   @APIResponse(responseCode = "204", description = "No users found")
   @Counted(name = "countGetAllUsers", description = "Counts how many times the getAllUsers method has been invoked")
   @Timed(name = "timeGetAllUsers", description = "Times how long it takes to invoke the getAllUsers method", unit = MetricUnits.MILLISECONDS)
-  public List<User> getAllUsers() {
-    List<User> users = userService.findAllUsers();
-    LOGGER.info("Total number of users " + users.size());
-    return users;
+  public Response getAllUsers() {
+    return Response.ok(userService.findAllUsers()).build();
   }
 
   @GET
@@ -75,15 +71,32 @@ public class UserResource {
     }
   }
 
+  @GET
+  @Path("/{userName}")
+  @Operation(summary = "Returns a user for a given user name")
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = User.class)))
+  @APIResponse(responseCode = "204", description = "The user is not found for a given username")
+  @Counted(name = "countGetUserByName", description = "Counts how many times the getUserByName method has been invoked")
+  @Timed(name = "timeGetUserByName", description = "Times how long it takes to invoke the getUserByName method", unit = MetricUnits.MILLISECONDS)
+  public Response getUserByName(@Parameter(description = "User name", required = true) @PathParam("userName") String userName) {
+    User user = userService.findByName(userName);
+    if (user != null) {
+      LOGGER.debug("Found user " + user);
+      return Response.ok(user).build();
+    }
+    else {
+      LOGGER.debug("No user found with user name " + userName);
+      return Response.noContent().build();
+    }
+  }
+
   @POST
   @Operation(summary = "Create a new user ")
   @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = User.class)))
   @Counted(name = "countCreateUser", description = "Counts how many times the createUser method has been invoked")
   @Timed(name = "timeGetCreateUser", description = "Times how long it takes to invoke the createUser method", unit = MetricUnits.MILLISECONDS)
   public Response createUser(User user) {
-
-    user = userService.createUser(user);
-    return Response.ok(user).status(201).build();
+    return Response.ok(userService.createUser(user)).status(201).build();
   }
 
   @PUT

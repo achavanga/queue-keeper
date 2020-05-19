@@ -1,7 +1,5 @@
 package za.co.covidify.resource;
 
-import java.util.List;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.json.Json;
@@ -50,10 +48,8 @@ public class QueueHeaderResource {
   @APIResponse(responseCode = "204", description = "No QueueHeaders found")
   @Counted(name = "countGetAllQueueHeaders", description = "Counts how many times the getAllQueueHeader method has been invoked")
   @Timed(name = "timeGetAllQueueHeaders", description = "Times how long it takes to invoke the getAllQueueHeaders method", unit = MetricUnits.MILLISECONDS)
-  public List<QueueHeader> getAllQueueHeaders() {
-    List<QueueHeader> queueHeader = queueHeaderService.findAllQueueHeader();
-    LOGGER.info("Total number of QueueHeaders " + queueHeader.size());
-    return queueHeader;
+  public Response getAllQueueHeaders() {
+    return Response.ok(queueHeaderService.findAllQueueHeader()).build();
   }
 
   @GET

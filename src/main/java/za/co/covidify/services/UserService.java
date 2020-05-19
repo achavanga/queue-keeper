@@ -12,9 +12,9 @@ import javax.ws.rs.WebApplicationException;
 
 import org.jboss.logging.Logger;
 
-import io.quarkus.panache.common.Sort;
 import za.co.covidify.model.Person;
 import za.co.covidify.model.User;
+import za.co.covidify.util.Utils;
 
 @ApplicationScoped
 @Transactional(SUPPORTS)
@@ -26,12 +26,15 @@ public class UserService {
   private static final Logger LOGGER = Logger.getLogger(UserService.class);
 
   public List<User> findAllUsers() {
-    return User.listAll(Sort.by("person.surname"));
+    return User.listAll();
   }
 
   public User findUserById(Long id) {
     return User.findById(id);
+  }
 
+  public User findByName(String userName) {
+    return User.find("userName", userName).firstResult();
   }
 
   @Transactional(REQUIRED)
@@ -39,6 +42,7 @@ public class UserService {
     if (user == null) {
       throw new WebApplicationException("Invalid request set on request.", 422);
     }
+    user.password = Utils.generatePasswordHash(user.getPassword());
     processPerson(user);
     User.persist(user);
     return user;
@@ -72,4 +76,5 @@ public class UserService {
       }
     user.person = person;
   }
+
 }

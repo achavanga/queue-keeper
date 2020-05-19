@@ -1,7 +1,5 @@
 package za.co.covidify.resource;
 
-import java.util.List;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.json.Json;
@@ -50,10 +48,8 @@ public class QueueResource {
   @APIResponse(responseCode = "204", description = "No Queues found")
   @Counted(name = "countGetAllQueues", description = "Counts how many times the getAllQueue method has been invoked")
   @Timed(name = "timeGetAllQueues", description = "Times how long it takes to invoke the getAllQueues method", unit = MetricUnits.MILLISECONDS)
-  public List<Queue> getAllQueues() {
-    List<Queue> queue = queueService.findAllQueue();
-    LOGGER.info("Total number of Queues " + queue.size());
-    return queue;
+  public Response getAllQueues() {
+    return Response.ok(queueService.findAllQueue()).build();
   }
 
   @GET
