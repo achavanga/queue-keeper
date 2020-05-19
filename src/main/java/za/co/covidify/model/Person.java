@@ -3,7 +3,6 @@ package za.co.covidify.model;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-import javax.json.bind.annotation.JsonbNillable;
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
@@ -27,7 +26,6 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 @Entity
 @Cacheable
 @Table(name = "PERSON")
-@JsonbNillable
 public class Person extends PanacheEntityBase {
 
   @Id

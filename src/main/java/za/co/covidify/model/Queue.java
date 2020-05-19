@@ -2,7 +2,7 @@ package za.co.covidify.model;
 
 import java.time.LocalDate;
 
-import javax.json.bind.annotation.JsonbNillable;
+import javax.json.bind.annotation.JsonbDateFormat;
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,14 +17,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
 @Entity
 @Cacheable
 @Table(name = "QUEUE")
-@JsonbNillable
 public class Queue extends PanacheEntityBase {
 
   @Id
@@ -44,11 +41,11 @@ public class Queue extends PanacheEntityBase {
   public QueueStatus status = QueueStatus.ACTIVE;
 
   @Column(name = "QUEUE_DATE")
-  @JsonFormat(pattern = "yyyy/MM/dd HH:mm")
+  @JsonbDateFormat("yyyy/MM/dd HH:mm")
   public LocalDate queueDateTime;
 
   @Column(name = "PROCESSED_DATE")
-  @JsonFormat(pattern = "yyyy/MM/dd HH:mm")
+  @JsonbDateFormat("yyyy/MM/dd HH:mm")
   public LocalDate processedDateTime;
 
   @ManyToOne(cascade = CascadeType.ALL, optional = true) // as defined in schema

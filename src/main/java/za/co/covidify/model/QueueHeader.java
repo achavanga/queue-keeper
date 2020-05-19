@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.json.bind.annotation.JsonbDateFormat;
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
@@ -47,7 +48,7 @@ public class QueueHeader extends PanacheEntityBase {
   public LocalDateTime queueSatrtDateTime = LocalDateTime.now();
 
   @Column(name = "QUEUE_END_DATE")
-  @JsonFormat(pattern = "yyyy/MM/dd HH:mm")
+  @JsonbDateFormat("yyyy/MM/dd HH:mm")
   public LocalDateTime queueEndDateTime = LocalDateTime.now();
 
   @Column(name = "TOTAL_IN_QUEUE")

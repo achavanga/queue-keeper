@@ -2,6 +2,7 @@ package za.co.covidify.model;
 
 import java.time.LocalDateTime;
 
+import javax.json.bind.annotation.JsonbDateFormat;
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,8 +17,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
@@ -38,7 +37,7 @@ public class User extends PanacheEntityBase {
   public String password;
 
   @Column(name = "LAST_SIGNED_IN")
-  @JsonFormat(pattern = "yyyy/MM/dd HH:mm")
+  @JsonbDateFormat("yyyy/MM/dd HH:mm")
   public LocalDateTime lastSignedIn = LocalDateTime.now();
 
   @Enumerated(EnumType.STRING)
