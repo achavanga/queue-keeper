@@ -1,24 +1,32 @@
 package za.co.covidify;
 
+import java.nio.charset.Charset;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 
-import org.jboss.logging.Logger;
+import org.apache.commons.io.IOUtils;
 
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
+import io.quarkus.runtime.configuration.ProfileManager;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @ApplicationScoped
 public class ApplicationLifeCycle {
 
-  private static final Logger LOGGER = Logger.getLogger(ApplicationLifeCycle.class);
-
+  @SneakyThrows
   void onStart(@Observes StartupEvent ev) {
-
-    LOGGER.info("                         Powered by Quarkus");
+    log.info("The application is starting...");
+    log.info("Active profile: {}", ProfileManager.getActiveProfile());
+    log.info("\n{}", IOUtils.resourceToString("banner.txt", Charset.defaultCharset(), ApplicationLifeCycle.class.getClassLoader()));
+    log.info("       Powered by Quarkus");
+    log.info("       ");
   }
 
   void onStop(@Observes ShutdownEvent ev) {
-    LOGGER.info("The application is stopping...");
+    log.info("The application is stopping.......");
   }
 }

@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,7 +22,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
@@ -58,7 +58,7 @@ public class QueueHeader extends PanacheEntityBase {
   public Company company;
 
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "queueHeader")
-  @JsonIgnore
+  @JsonbTransient
   public List<Queue> queue = new ArrayList<>();
 
 }

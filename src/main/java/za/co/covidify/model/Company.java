@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -24,7 +25,6 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
@@ -50,7 +50,7 @@ public class Company extends PanacheEntityBase {
   // @JsonIgnore
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
   @LazyCollection(LazyCollectionOption.FALSE)
-  @JsonIgnore
+  @JsonbTransient
   public Set<Person> companyEmployee = new HashSet<>();
 
   @OneToOne(optional = false)
@@ -71,7 +71,7 @@ public class Company extends PanacheEntityBase {
   public Person contactPerson;
 
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "company", fetch = FetchType.EAGER)
-  @JsonIgnore
+  @JsonbTransient
   public List<QueueHeader> queueHeader = new ArrayList<>();
 
   @Column(name = "DATE_CREATED")

@@ -81,5 +81,5 @@ Navigate to:
 @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userSequence")
 public Long id;
 ```
-
+* Had to change from @JsonIgnore to @JsonbTransient as I was getting a lot of fetch errors with error ""RESTEASY008205: JSON Binding serialization error Unable to serialize property ''".
    

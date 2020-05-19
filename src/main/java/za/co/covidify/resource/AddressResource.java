@@ -101,7 +101,7 @@ public class AddressResource {
       if (exception instanceof WebApplicationException) {
         code = ((WebApplicationException) exception).getResponse().getStatus();
       }
-      return Response.status(code).entity(Json.createObjectBuilder().add("Error ", exception.getMessage()).add("Code ", code).build()).build();
+      return Response.status(code).entity(Json.createObjectBuilder().add("Error ", exception.getLocalizedMessage()).add("Code ", code).build()).build();
     }
 
   }

@@ -1,9 +1,10 @@
 package za.co.covidify.model;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
+import javax.json.bind.annotation.JsonbNillable;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,17 +20,14 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
 @Entity
 @Cacheable
 @Table(name = "PERSON")
+@JsonbNillable
 public class Person extends PanacheEntityBase {
 
   @Id
@@ -60,12 +58,12 @@ public class Person extends PanacheEntityBase {
   @JoinColumn(name = "ADDRESS_ID")
   public Address address;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "person")
-  @LazyCollection(LazyCollectionOption.FALSE)
-  @JsonIgnore
-  public List<Queue> queue = new ArrayList<>();
+  @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
+  @JsonbTransient
+  public Set<Queue> queue;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "COMPANY_ID")
   public Company company;
+
 }
