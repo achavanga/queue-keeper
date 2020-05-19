@@ -6,16 +6,21 @@ import static javax.transaction.Transactional.TxType.SUPPORTS;
 import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.WebApplicationException;
 
 import org.jboss.logging.Logger;
 
+import za.co.covidify.model.Company;
 import za.co.covidify.model.QueueHeader;
 
 @ApplicationScoped
 @Transactional(SUPPORTS)
 public class QueueHeaderService {
+
+  @Inject
+  CompanyService companyService;
 
   private static final Logger LOGGER = Logger.getLogger(QueueHeaderService.class);
 
@@ -32,6 +37,7 @@ public class QueueHeaderService {
     if (queueHeader == null) {
       throw new WebApplicationException("Invalid request.", 422);
     }
+    processCompany(queueHeader.company);
     QueueHeader.persist(queueHeader);
     return queueHeader;
   }
@@ -49,5 +55,16 @@ public class QueueHeaderService {
 
     entity = queueHeader;
     return queueHeader;
+  }
+
+  private Company processCompany(Company company) {
+    if (company == null) {
+      throw new WebApplicationException("Invalid request.", 422);
+    }
+    else
+      if (company.id != null || company.id != 0l) {
+        company = companyService.findCompanyById(company.id);
+      }
+    return company;
   }
 }

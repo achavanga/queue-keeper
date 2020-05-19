@@ -1,6 +1,6 @@
 package za.co.covidify.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,11 +36,7 @@ public class QueueHeader extends PanacheEntityBase {
   public Long id;
 
   @Column(name = "QUEUE_NUMBER", length = 20)
-  public String queueNumber;
-
-  public String getQueueNumber() {
-    return String.format("%020d", this.id);
-  }
+  public String queueNumber = String.format("%020d", this.id);
 
   @Enumerated(EnumType.STRING)
   @Column(name = "QUEUE_STATUS", nullable = false)
@@ -48,21 +44,21 @@ public class QueueHeader extends PanacheEntityBase {
 
   @Column(name = "QUEUE_START_DATE")
   @JsonFormat(pattern = "yyyy/MM/dd HH:mm")
-  public LocalDate queueSatrtDateTime;
+  public LocalDateTime queueSatrtDateTime = LocalDateTime.now();
 
   @Column(name = "QUEUE_END_DATE")
   @JsonFormat(pattern = "yyyy/MM/dd HH:mm")
-  public LocalDate queueEndDateTime;
+  public LocalDateTime queueEndDateTime = LocalDateTime.now();
 
   @Column(name = "TOTAL_IN_QUEUE")
   public Long totalInQueue;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "COMPANY_ID")
-  private Company company;
+  public Company company;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "queueHeader", fetch = FetchType.EAGER)
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "queueHeader")
   @JsonIgnore
-  private List<Queue> queue = new ArrayList<>();
+  public List<Queue> queue = new ArrayList<>();
 
 }

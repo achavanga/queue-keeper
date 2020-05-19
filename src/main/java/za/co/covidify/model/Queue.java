@@ -50,10 +50,10 @@ public class Queue extends PanacheEntityBase {
 
   @ManyToOne
   @JoinColumn(name = "PERSON_ID")
-  private Person person;
+  public Person person;
 
   @ManyToOne
   @JoinColumn(name = "QUEUE_HEADER_ID")
-  private QueueHeader queueHeader;
+  public QueueHeader queueHeader;
 
 }

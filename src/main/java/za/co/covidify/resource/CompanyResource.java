@@ -51,9 +51,9 @@ public class CompanyResource {
   @Counted(name = "countGetAllCompanys", description = "Counts how many times the getAllCompany method has been invoked")
   @Timed(name = "timeGetAllCompanys", description = "Times how long it takes to invoke the getAllCompanys method", unit = MetricUnits.MILLISECONDS)
   public List<Company> getAllCompanys() {
-    List<Company> Company = companyService.findAllCompany();
-    LOGGER.info("Total number of Companys " + Company.size());
-    return Company;
+    List<Company> company = companyService.findAllCompany();
+    LOGGER.info("Total number of Companys " + company.size());
+    return company;
   }
 
   @GET

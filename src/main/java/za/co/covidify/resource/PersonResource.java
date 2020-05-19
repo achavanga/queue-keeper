@@ -81,8 +81,8 @@ public class PersonResource {
   @Counted(name = "countCreatePerson", description = "Counts how many times the createPerson method has been invoked")
   @Timed(name = "timeGetCreatePerson", description = "Times how long it takes to invoke the createPerson method", unit = MetricUnits.MILLISECONDS)
   public Response createPerson(Person person) {
-    person = personService.createPerson(person);
-    return Response.ok(person).status(201).build();
+
+    return Response.ok(personService.createPerson(person)).status(201).build();
   }
 
   @PUT

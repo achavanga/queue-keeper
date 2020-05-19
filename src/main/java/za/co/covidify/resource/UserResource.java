@@ -81,6 +81,7 @@ public class UserResource {
   @Counted(name = "countCreateUser", description = "Counts how many times the createUser method has been invoked")
   @Timed(name = "timeGetCreateUser", description = "Times how long it takes to invoke the createUser method", unit = MetricUnits.MILLISECONDS)
   public Response createUser(User user) {
+
     user = userService.createUser(user);
     return Response.ok(user).status(201).build();
   }

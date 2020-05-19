@@ -1,5 +1,6 @@
 package za.co.covidify.model;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -14,12 +15,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
@@ -40,8 +44,12 @@ public class Company extends PanacheEntityBase {
   @Column(name = "COMPANY_WEBSITE_URL", length = 200)
   public String websiteUrl;
 
-  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-  @JoinTable(name = "COMPANY_EMPLOYEE", joinColumns = @JoinColumn(name = "PERSON_ID"), inverseJoinColumns = @JoinColumn(name = "COMPANY_ID"))
+  // @OneToMany(cascade = CascadeType.ALL)
+  // @JoinTable(name = "COMPANY_EMPLOYEE", joinColumns = @JoinColumn(name =
+  // "PERSON_ID"), inverseJoinColumns = @JoinColumn(name = "COMPANY_ID"))
+  // @JsonIgnore
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
+  @LazyCollection(LazyCollectionOption.FALSE)
   @JsonIgnore
   public Set<Person> companyEmployee = new HashSet<>();
 
@@ -64,6 +72,10 @@ public class Company extends PanacheEntityBase {
 
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "company", fetch = FetchType.EAGER)
   @JsonIgnore
-  private List<QueueHeader> queueHeader = new ArrayList<>();
+  public List<QueueHeader> queueHeader = new ArrayList<>();
+
+  @Column(name = "DATE_CREATED")
+  @JsonFormat(pattern = "yyyy/MM/dd HH:mm")
+  public LocalDateTime dateCreated = LocalDateTime.now();
 
 }

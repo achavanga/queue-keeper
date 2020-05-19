@@ -1,6 +1,6 @@
 package za.co.covidify.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
@@ -39,7 +39,7 @@ public class User extends PanacheEntityBase {
 
   @Column(name = "LAST_SIGNED_IN")
   @JsonFormat(pattern = "yyyy/MM/dd HH:mm")
-  public LocalDate lastSignedIn;
+  public LocalDateTime lastSignedIn = LocalDateTime.now();
 
   @Enumerated(EnumType.STRING)
   @Column(name = "USER_TYPE", nullable = false)
