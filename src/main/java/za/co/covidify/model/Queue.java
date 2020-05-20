@@ -29,12 +29,8 @@ public class Queue extends PanacheEntityBase {
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "queueSequence")
   public Long id;
 
-  @Column(name = "QUEUE_NUMBER", length = 10)
+  @Column(name = "QUEUE_NUMBER", length = 20)
   public String queueNumber;
-
-  // public String getQueueNumber() {
-  // return String.format("%010d", this.id);
-  // }
 
   @Enumerated(EnumType.STRING)
   @Column(name = "QUEUE_STATUS", nullable = false)

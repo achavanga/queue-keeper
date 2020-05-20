@@ -5,6 +5,7 @@ import java.security.spec.InvalidKeySpecException;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.json.Json;
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -46,7 +47,7 @@ public class LoginResource {
   @Operation(summary = "Loging service ")
   @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = User.class)))
   @APIResponse(responseCode = "204", description = "No Companys found")
-  public Response login(Login login) throws InvalidKeySpecException {
+  public Response login(@Valid Login login) throws InvalidKeySpecException {
     return loginService.login(login);
   }
 

@@ -32,6 +32,10 @@ public class QueueService {
     if (queue == null) {
       throw new WebApplicationException("Invalid request.", 422);
     }
+
+    // public void setQueueNumber(String queueNumber) {
+    // this.queueNumber = String.format("%020d", this.id);
+    // }
     Queue.persist(queue);
     return queue;
   }
