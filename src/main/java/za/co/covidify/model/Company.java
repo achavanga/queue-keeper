@@ -43,14 +43,10 @@ public class Company extends PanacheEntityBase {
   @Column(name = "COMPANY_WEBSITE_URL", length = 200)
   public String websiteUrl;
 
-  // @OneToMany(cascade = CascadeType.ALL)
-  // @JoinTable(name = "COMPANY_EMPLOYEE", joinColumns = @JoinColumn(name =
-  // "PERSON_ID"), inverseJoinColumns = @JoinColumn(name = "COMPANY_ID"))
-  // @JsonIgnore
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
   @LazyCollection(LazyCollectionOption.FALSE)
   @JsonbTransient
-  public Set<Person> companyEmployee = new HashSet<>();
+  public Set<Person> companyEmployees = new HashSet<>();
 
   @OneToOne(optional = false)
   @JoinColumn(name = "ADDRESS_ID")
@@ -76,5 +72,8 @@ public class Company extends PanacheEntityBase {
   @Column(name = "DATE_CREATED")
   @JsonbDateFormat("yyyy/MM/dd HH:mm")
   public LocalDateTime dateCreated = LocalDateTime.now();
+
+  @Column(name = "IS_COMPANY_ACTIVE")
+  public boolean isCompanyActive = false;
 
 }

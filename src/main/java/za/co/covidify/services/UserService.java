@@ -33,8 +33,8 @@ public class UserService {
     return User.findById(id);
   }
 
-  public User findByName(String userName) {
-    return User.find("userName", userName).firstResult();
+  public User findByName(String username) {
+    return User.find("username", username).firstResult();
   }
 
   @Transactional(REQUIRED)

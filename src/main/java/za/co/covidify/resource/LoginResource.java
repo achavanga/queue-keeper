@@ -46,7 +46,7 @@ public class LoginResource {
   @Timed(name = "timePostLogin", description = "How long it takes to perform check.", unit = MetricUnits.MILLISECONDS)
   @Operation(summary = "Loging service ")
   @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = User.class)))
-  @APIResponse(responseCode = "204", description = "No Companys found")
+  @APIResponse(responseCode = "204", description = "No User with that username found")
   public Response login(@Valid Login login) throws InvalidKeySpecException {
     return loginService.login(login);
   }

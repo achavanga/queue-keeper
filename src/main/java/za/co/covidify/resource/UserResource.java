@@ -72,20 +72,20 @@ public class UserResource {
   }
 
   @GET
-  @Path("/{userName}")
+  @Path("/{username}")
   @Operation(summary = "Returns a user for a given user name")
   @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = User.class)))
   @APIResponse(responseCode = "204", description = "The user is not found for a given username")
   @Counted(name = "countGetUserByName", description = "Counts how many times the getUserByName method has been invoked")
   @Timed(name = "timeGetUserByName", description = "Times how long it takes to invoke the getUserByName method", unit = MetricUnits.MILLISECONDS)
-  public Response getUserByName(@Parameter(description = "User name", required = true) @PathParam("userName") String userName) {
-    User user = userService.findByName(userName);
+  public Response getUserByName(@Parameter(description = "Username", required = true) @PathParam("username") String username) {
+    User user = userService.findByName(username);
     if (user != null) {
       LOGGER.debug("Found user " + user);
       return Response.ok(user).build();
     }
     else {
-      LOGGER.debug("No user found with user name " + userName);
+      LOGGER.debug("No user found with user name " + username);
       return Response.noContent().build();
     }
   }

@@ -32,7 +32,7 @@ public class User extends PanacheEntityBase {
   public Long id;
 
   @Column(name = "USER_NAME", nullable = false, length = 60, unique = true)
-  public String userName;
+  public String username;
 
   @Column(name = "PASSWORD", length = 150)
   public String password;

@@ -8,7 +8,7 @@ import lombok.Data;
 public class Login {
 
   @NotEmpty(message = "User name cannot be empty")
-  String userName;
+  String username;
 
   @NotEmpty(message = "Password cannot be empty")
   String password;

@@ -72,6 +72,11 @@ Navigate to:
 
 <http://localhost:8080/swagger-ui>
 
+## Login Details
+Username  : user 
+
+Password  : string
+
 ## Lesson Learned
 * When creating entity classes using Panache make sure all variables are public and not private. If you mark them private your API will not bring back an value. You will only see the entity id(s) which is already public as it comes from PanacheEntity.
 * No need to add Getters and Setter in entity classes.

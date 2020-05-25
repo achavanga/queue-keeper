@@ -36,8 +36,8 @@ public class QueueHeader extends PanacheEntityBase {
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "queueHeaderSequence")
   public Long id;
 
-  @Column(name = "QUEUE_NUMBER", length = 20)
-  public String queueNumber = String.format("%020d", this.id);
+  @Column(name = "QUEUE_PREFIX")
+  public String queuePrefix;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "QUEUE_STATUS", nullable = false)
@@ -46,6 +46,15 @@ public class QueueHeader extends PanacheEntityBase {
   @Column(name = "QUEUE_START_DATE")
   @JsonFormat(pattern = "yyyy/MM/dd HH:mm")
   public LocalDateTime queueSatrtDateTime = LocalDateTime.now();
+
+  @Column(name = "QUEUE_INTERVALS")
+  public int queueIntervals;
+
+  @Column(name = "NUMBER_ALLOWED_AT_A_TIME")
+  public int numberAllowedAtATime;
+
+  @Column(name = "REASON_FOR_STOPPING_QUEUE")
+  public String reasonForStopping;
 
   @Column(name = "QUEUE_END_DATE")
   @JsonbDateFormat("yyyy/MM/dd HH:mm")

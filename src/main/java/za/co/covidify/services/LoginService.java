@@ -10,12 +10,9 @@ import javax.transaction.Transactional;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.wildfly.security.credential.PasswordCredential;
-import org.wildfly.security.evidence.PasswordGuessEvidence;
-import org.wildfly.security.password.util.ModularCrypt;
-
 import za.co.covidify.model.Login;
 import za.co.covidify.model.User;
+import za.co.covidify.util.Utils;
 
 @ApplicationScoped
 @Transactional(SUPPORTS)
@@ -25,11 +22,9 @@ public class LoginService {
   UserService userService;
 
   public Response login(Login login) throws InvalidKeySpecException {
-    User user = userService.findByName(login.getUserName());
+    User user = userService.findByName(login.getUsername());
     if (user != null) {
-      PasswordCredential producedPasswordCredential = new PasswordCredential(ModularCrypt.decode(user.getPassword()));
-      PasswordGuessEvidence correctPasswordEvidence = new PasswordGuessEvidence(login.getPassword().toCharArray());
-      if (producedPasswordCredential.verify(correctPasswordEvidence)) {
+      if (Utils.checkPasswordIsSame(user.getPassword(), login.getPassword())) {
         return Response.ok(user).build();
       }
       else {
@@ -38,4 +33,5 @@ public class LoginService {
     }
     return Response.status(Status.BAD_REQUEST).build();
   }
+
 }
