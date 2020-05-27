@@ -18,6 +18,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
@@ -34,7 +36,9 @@ public class User extends PanacheEntityBase {
   @Column(name = "USER_NAME", nullable = false, length = 60, unique = true)
   public String username;
 
-  @Column(name = "PASSWORD", length = 150)
+  @NotNull
+  @Size(min = 3, max = 150)
+  @Column(name = "PASSWORD", length = 150, nullable = false)
   public String password;
 
   @Column(name = "LAST_SIGNED_IN")

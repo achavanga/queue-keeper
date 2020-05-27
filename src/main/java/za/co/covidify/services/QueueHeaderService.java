@@ -12,15 +12,15 @@ import javax.ws.rs.WebApplicationException;
 
 import org.jboss.logging.Logger;
 
-import za.co.covidify.model.Company;
 import za.co.covidify.model.QueueHeader;
+import za.co.covidify.service.common.CommonServiceUtil;
 
 @ApplicationScoped
 @Transactional(SUPPORTS)
 public class QueueHeaderService {
 
   @Inject
-  CompanyService companyService;
+  CommonServiceUtil commonServiceUtil;
 
   private static final Logger LOGGER = Logger.getLogger(QueueHeaderService.class);
 
@@ -37,7 +37,7 @@ public class QueueHeaderService {
     if (queueHeader == null) {
       throw new WebApplicationException("Invalid request.", 422);
     }
-    processCompany(queueHeader.company);
+    commonServiceUtil.processCompany(queueHeader.company);
     QueueHeader.persist(queueHeader);
     return queueHeader;
   }
@@ -57,14 +57,4 @@ public class QueueHeaderService {
     return queueHeader;
   }
 
-  private Company processCompany(Company company) {
-    if (company == null) {
-      throw new WebApplicationException("Invalid request.", 422);
-    }
-    else
-      if (company.id != null || company.id != 0l) {
-        company = companyService.findCompanyById(company.id);
-      }
-    return company;
-  }
 }

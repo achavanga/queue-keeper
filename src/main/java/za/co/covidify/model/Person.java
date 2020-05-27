@@ -19,6 +19,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
@@ -38,7 +40,9 @@ public class Person extends PanacheEntityBase {
   @Column(name = "SURNAME", length = 100)
   public String surname;
 
-  @Column(name = "EMAIL_ADDRESS", length = 100)
+  @Email
+  @Size(max = 200)
+  @Column(name = "EMAIL_ADDRESS", length = 200, unique = true)
   public String emailAddress;
 
   @Column(name = "CELLPHONE", nullable = false, length = 20)

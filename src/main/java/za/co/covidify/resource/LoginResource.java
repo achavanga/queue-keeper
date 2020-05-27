@@ -7,10 +7,12 @@ import javax.inject.Inject;
 import javax.json.Json;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
@@ -51,6 +53,20 @@ public class LoginResource {
     return loginService.login(login);
   }
 
+  @GET
+  @Path("/TermsAndConditionsMobile")
+  @Operation(summary = "TermsAndConditionsMobile")
+  @APIResponse(responseCode = "200")
+  @APIResponse(responseCode = "204", description = "No User with that username found")
+  @Produces(MediaType.APPLICATION_OCTET_STREAM)
+  public Response export() {
+
+    AddressCSV addressCSV = new AddressCSV("street", "town1", "country1");
+    return Response.ok(addressCSV.toString()).header("Access-Control-Expose-Headers", "content-disposition, Content-Type")
+        .header(HttpHeaders.CONTENT_DISPOSITION, "inline;filename=" + "test.csv").build();
+
+  }
+
   @Provider
   public static class ErrorMapper implements ExceptionMapper<Exception> {
 
@@ -63,5 +79,32 @@ public class LoginResource {
       return Response.status(code).entity(Json.createObjectBuilder().add("Error ", exception.getMessage()).add("Code ", code).build()).build();
     }
 
+  }
+}
+
+class AddressCSV {
+
+  private String street;
+
+  private String town;
+
+  private String country;
+
+  public AddressCSV(String street, String town, String country) {
+    this.street = street;
+    this.town = town;
+    this.country = country;
+  }
+
+  // getters and setters here
+
+  // here you could have a method called generateCSV() for example
+
+  // or you could override the toString() method like this
+
+  @Override
+  public String toString() {
+    return street + "," + town + "," + country + "\n"; // Add the '\n' if you
+                                                       // need a new line
   }
 }

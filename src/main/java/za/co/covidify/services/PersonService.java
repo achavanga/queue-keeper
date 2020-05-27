@@ -13,15 +13,15 @@ import javax.ws.rs.WebApplicationException;
 import org.jboss.logging.Logger;
 
 import io.quarkus.panache.common.Sort;
-import za.co.covidify.model.Address;
 import za.co.covidify.model.Person;
+import za.co.covidify.service.common.CommonServiceUtil;
 
 @ApplicationScoped
 @Transactional(SUPPORTS)
 public class PersonService {
 
   @Inject
-  AddressService addressService;
+  CommonServiceUtil commonServiceUtil;
 
   private static final Logger LOGGER = Logger.getLogger(PersonService.class);
 
@@ -38,9 +38,7 @@ public class PersonService {
     if (person == null) {
       throw new WebApplicationException("Id was invalidly set on request.", 422);
     }
-
-    processAddress(person);
-
+    commonServiceUtil.processAddress(person.address, true);
     Person.persist(person);
     return person;
   }
@@ -59,18 +57,4 @@ public class PersonService {
     return person;
   }
 
-  private void processAddress(Person person) {
-    Address address = person.address;
-    if (address == null) {
-      throw new WebApplicationException("Invalid request.", 422);
-    }
-    else
-      if (address.id == null || address.id == 0l) {
-        address = addressService.createAddress(address);
-      }
-      else {
-        address = addressService.findAddressById(address.id);
-      }
-    person.address = address;
-  }
 }

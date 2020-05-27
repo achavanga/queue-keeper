@@ -12,19 +12,15 @@ import javax.ws.rs.WebApplicationException;
 
 import org.jboss.logging.Logger;
 
-import za.co.covidify.model.Address;
 import za.co.covidify.model.Company;
-import za.co.covidify.model.Person;
+import za.co.covidify.service.common.CommonServiceUtil;
 
 @ApplicationScoped
 @Transactional(SUPPORTS)
 public class CompanyService {
 
   @Inject
-  AddressService addressService;
-
-  @Inject
-  PersonService personService;
+  CommonServiceUtil commonServiceUtil;
 
   private static final Logger LOGGER = Logger.getLogger(CompanyService.class);
 
@@ -41,9 +37,9 @@ public class CompanyService {
     if (company == null) {
       throw new WebApplicationException("Invalid request.", 422);
     }
-    processPerson(company.contactPerson);
-    processAddress(company.address);
-    Person.persist(company);
+    commonServiceUtil.processPerson(company.contactPerson, false);
+    commonServiceUtil.processAddress(company.address, true);
+    Company.persist(company);
     return company;
   }
 
@@ -61,28 +57,4 @@ public class CompanyService {
     return company;
   }
 
-  private Person processPerson(Person person) {
-    if (person == null) {
-      throw new WebApplicationException("Invalid request.", 422);
-    }
-    else
-      if (person.id != null || person.id != 0l) {
-        person = personService.findPersonById(person.id);
-      }
-    return person;
-  }
-
-  private Address processAddress(Address address) {
-    if (address == null) {
-      throw new WebApplicationException("Invalid request.", 422);
-    }
-    else
-      if (address.id == null || address.id == 0l) {
-        address = addressService.createAddress(address);
-      }
-      else {
-        address = addressService.findAddressById(address.id);
-      }
-    return address;
-  }
 }

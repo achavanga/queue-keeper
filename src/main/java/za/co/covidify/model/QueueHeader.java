@@ -36,6 +36,9 @@ public class QueueHeader extends PanacheEntityBase {
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "queueHeaderSequence")
   public Long id;
 
+  @Column(name = "NAME")
+  public String name;
+
   @Column(name = "QUEUE_PREFIX")
   public String queuePrefix;
 

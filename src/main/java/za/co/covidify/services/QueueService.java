@@ -6,18 +6,23 @@ import static javax.transaction.Transactional.TxType.SUPPORTS;
 import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.WebApplicationException;
 
 import org.jboss.logging.Logger;
 
 import za.co.covidify.model.Queue;
+import za.co.covidify.service.common.CommonServiceUtil;
 
 @ApplicationScoped
 @Transactional(SUPPORTS)
 public class QueueService {
 
   private static final Logger LOGGER = Logger.getLogger(QueueService.class);
+
+  @Inject
+  CommonServiceUtil commonServiceUtil;
 
   public List<Queue> findAllQueue() {
     return Queue.listAll();
@@ -33,9 +38,7 @@ public class QueueService {
       throw new WebApplicationException("Invalid request.", 422);
     }
 
-    // public void setQueueNumber(String queueNumber) {
-    // this.queueNumber = String.format("%020d", this.id);
-    // }
+    commonServiceUtil.processPerson(queue.person, false);
     Queue.persist(queue);
     return queue;
   }
@@ -54,4 +57,5 @@ public class QueueService {
     entity = queue;
     return queue;
   }
+
 }

@@ -12,8 +12,8 @@ import javax.ws.rs.WebApplicationException;
 
 import org.jboss.logging.Logger;
 
-import za.co.covidify.model.Person;
 import za.co.covidify.model.User;
+import za.co.covidify.service.common.CommonServiceUtil;
 import za.co.covidify.util.Utils;
 
 @ApplicationScoped
@@ -21,7 +21,7 @@ import za.co.covidify.util.Utils;
 public class UserService {
 
   @Inject
-  PersonService personService;
+  CommonServiceUtil commonServiceUtil;
 
   private static final Logger LOGGER = Logger.getLogger(UserService.class);
 
@@ -43,7 +43,7 @@ public class UserService {
       throw new WebApplicationException("Invalid request set on request.", 422);
     }
     user.password = Utils.generatePasswordHash(user.getPassword());
-    processPerson(user);
+    commonServiceUtil.processPerson(user.person, true);
     User.persist(user);
     return user;
   }
@@ -60,21 +60,6 @@ public class UserService {
     }
     entity = user;
     return user;
-  }
-
-  private void processPerson(User user) {
-    Person person = user.person;
-    if (person == null) {
-      throw new WebApplicationException("Invalid request.", 422);
-    }
-    else
-      if (person.id == null || person.id == 0l) {
-        person = personService.createPerson(person);
-      }
-      else {
-        person = personService.findPersonById(person.id);
-      }
-    user.person = person;
   }
 
 }
