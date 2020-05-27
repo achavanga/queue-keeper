@@ -17,8 +17,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.apache.commons.lang3.StringUtils;
-
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
 @Entity
@@ -53,11 +51,11 @@ public class Queue extends PanacheEntityBase {
   @ManyToOne
   @JoinColumn(name = "QUEUE_HEADER_ID")
   public QueueHeader queueHeader;
-
-  public void setQueueNumber(String queueNumber) {
-    if (StringUtils.isBlank(queueNumber)) {
-      this.queueNumber = String.format("%020d", this.id);
-    }
-  }
+  //
+  // public void setQueueNumber(String queueNumber) {
+  // if (StringUtils.isBlank(queueNumber)) {
+  // this.queueNumber = String.format("%020d", this.id);
+  // }
+  // }
 
 }
