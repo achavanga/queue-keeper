@@ -12,7 +12,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -66,7 +65,7 @@ public class QueueHeader extends PanacheEntityBase {
   @Column(name = "TOTAL_IN_QUEUE")
   public Long totalInQueue;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(cascade = CascadeType.ALL, optional = true)
   @JoinColumn(name = "COMPANY_ID")
   public Company company;
 

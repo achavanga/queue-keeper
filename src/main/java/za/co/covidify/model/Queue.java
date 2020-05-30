@@ -48,7 +48,7 @@ public class Queue extends PanacheEntityBase {
   @JoinColumn(name = "PERSON_ID")
   public Person person;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL, optional = false)
   @JoinColumn(name = "QUEUE_HEADER_ID")
   public QueueHeader queueHeader;
   //
