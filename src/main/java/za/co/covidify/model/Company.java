@@ -33,7 +33,7 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 public class Company extends PanacheEntityBase {
 
   @Id
-  @SequenceGenerator(name = "companySequence", sequenceName = "company_id_seq", allocationSize = 1, initialValue = 2)
+  @SequenceGenerator(name = "companySequence", sequenceName = "company_id_seq", allocationSize = 1, initialValue = 10)
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "companySequence")
   public Long id;
 
@@ -70,7 +70,7 @@ public class Company extends PanacheEntityBase {
   public List<QueueHeader> queueHeader = new ArrayList<>();
 
   @Column(name = "DATE_CREATED")
-  @JsonbDateFormat("yyyy/MM/dd HH:mm")
+  @JsonbDateFormat("yyyy/MM/dd HH:mm:ss")
   public LocalDateTime dateCreated = LocalDateTime.now();
 
   @Column(name = "IS_COMPANY_ACTIVE")

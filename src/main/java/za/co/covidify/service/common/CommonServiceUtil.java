@@ -10,9 +10,11 @@ import javax.ws.rs.WebApplicationException;
 import za.co.covidify.model.Address;
 import za.co.covidify.model.Company;
 import za.co.covidify.model.Person;
+import za.co.covidify.model.QueueHeader;
 import za.co.covidify.services.AddressService;
 import za.co.covidify.services.CompanyService;
 import za.co.covidify.services.PersonService;
+import za.co.covidify.services.QueueHeaderService;
 
 @ApplicationScoped
 @Transactional(SUPPORTS)
@@ -26,6 +28,9 @@ public class CommonServiceUtil {
 
   @Inject
   AddressService addressService;
+
+  @Inject
+  QueueHeaderService queueHeaderService;
 
   /**
    * 
@@ -88,5 +93,16 @@ public class CommonServiceUtil {
           throw new WebApplicationException("Invalid Address details request.", 422);
         }
     return address;
+  }
+
+  public QueueHeader processQueueHeader(QueueHeader queueHeader) {
+    if (queueHeader == null) {
+      throw new WebApplicationException("Invalid Queue Header request.", 422);
+    }
+    else
+      if (queueHeader.id != null || queueHeader.id != 0l) {
+        queueHeader = queueHeaderService.findQueueHeaderById(queueHeader.id);
+      }
+    return queueHeader;
   }
 }

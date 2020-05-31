@@ -101,8 +101,7 @@ public class UserResource {
 
   @PUT
   public Response updateUser(User user) {
-    user = userService.updateUser(user);
-    return Response.ok(user).status(200).build();
+    return Response.ok(userService.updateUser(user)).status(200).build();
   }
 
   @Provider

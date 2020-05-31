@@ -29,7 +29,7 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 public class User extends PanacheEntityBase {
 
   @Id
-  @SequenceGenerator(name = "userSequence", sequenceName = "user_id_seq", allocationSize = 1, initialValue = 2)
+  @SequenceGenerator(name = "userSequence", sequenceName = "user_id_seq", allocationSize = 1, initialValue = 10)
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userSequence")
   public Long id;
 

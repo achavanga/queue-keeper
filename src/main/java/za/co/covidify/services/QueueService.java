@@ -37,8 +37,8 @@ public class QueueService {
     if (queue == null) {
       throw new WebApplicationException("Invalid request.", 422);
     }
-
-    commonServiceUtil.processPerson(queue.person, false);
+    queue.person = commonServiceUtil.processPerson(queue.person, false);
+    queue.queueHeader = commonServiceUtil.processQueueHeader(queue.queueHeader);
     Queue.persist(queue);
     return queue;
   }

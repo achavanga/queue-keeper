@@ -1,6 +1,6 @@
 package za.co.covidify.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.json.bind.annotation.JsonbDateFormat;
 import javax.persistence.Cacheable;
@@ -25,7 +25,7 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 public class Queue extends PanacheEntityBase {
 
   @Id
-  @SequenceGenerator(name = "queueSequence", sequenceName = "queue_id_seq", allocationSize = 1, initialValue = 2)
+  @SequenceGenerator(name = "queueSequence", sequenceName = "queue_id_seq", allocationSize = 1, initialValue = 10)
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "queueSequence")
   public Long id;
 
@@ -34,28 +34,26 @@ public class Queue extends PanacheEntityBase {
 
   @Enumerated(EnumType.STRING)
   @Column(name = "QUEUE_STATUS", nullable = false)
-  public QueueStatus status = QueueStatus.ACTIVE;
+  public QueueStatus status = QueueStatus.CREATED;
 
   @Column(name = "QUEUE_DATE")
   @JsonbDateFormat("yyyy/MM/dd HH:mm")
-  public LocalDate queueDateTime;
+  public LocalDateTime queueDateTime = LocalDateTime.now();
 
-  @Column(name = "PROCESSED_DATE")
-  @JsonbDateFormat("yyyy/MM/dd HH:mm")
-  public LocalDate processedDateTime;
+  @Column(name = "EXPECTED_PROCESSED_TIME")
+  @JsonbDateFormat("yyyy/MM/dd HH:mm:ss")
+  public LocalDateTime expectedPorcessedTime = LocalDateTime.now();
 
-  @ManyToOne(cascade = CascadeType.ALL, optional = true) // as defined in schema
+  @Column(name = "QUEUE_END_DATE")
+  @JsonbDateFormat("yyyy/MM/dd HH:mm:ss")
+  public LocalDateTime queueEndDateTime = LocalDateTime.now();
+
+  @ManyToOne(cascade = CascadeType.ALL, optional = true)
   @JoinColumn(name = "PERSON_ID")
   public Person person;
 
   @ManyToOne(cascade = CascadeType.ALL, optional = false)
   @JoinColumn(name = "QUEUE_HEADER_ID")
   public QueueHeader queueHeader;
-  //
-  // public void setQueueNumber(String queueNumber) {
-  // if (StringUtils.isBlank(queueNumber)) {
-  // this.queueNumber = String.format("%020d", this.id);
-  // }
-  // }
 
 }

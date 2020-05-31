@@ -18,10 +18,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
@@ -31,7 +30,7 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 public class QueueHeader extends PanacheEntityBase {
 
   @Id
-  @SequenceGenerator(name = "queueHeaderSequence", sequenceName = "queue_id_seq", allocationSize = 1, initialValue = 2)
+  @SequenceGenerator(name = "queueHeaderSequence", sequenceName = "queue_id_seq", allocationSize = 1, initialValue = 10)
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "queueHeaderSequence")
   public Long id;
 
@@ -45,12 +44,12 @@ public class QueueHeader extends PanacheEntityBase {
   @Column(name = "QUEUE_STATUS", nullable = false)
   public QueueStatus status = QueueStatus.ACTIVE;
 
-  @Column(name = "QUEUE_START_DATE")
-  @JsonFormat(pattern = "yyyy/MM/dd HH:mm")
-  public LocalDateTime queueSatrtDateTime = LocalDateTime.now();
+  @Column(name = "QUEUE_DATE")
+  @JsonbDateFormat("yyyy/MM/dd HH:mm")
+  public LocalDateTime queueDate = LocalDateTime.now();
 
-  @Column(name = "QUEUE_INTERVALS")
-  public int queueIntervals;
+  @Column(name = "QUEUE_INTERVALS_IN_MINUTES")
+  public int queueIntervalsInMinutes;
 
   @Column(name = "NUMBER_ALLOWED_AT_A_TIME")
   public int numberAllowedAtATime;
@@ -65,7 +64,7 @@ public class QueueHeader extends PanacheEntityBase {
   @Column(name = "TOTAL_IN_QUEUE")
   public Long totalInQueue;
 
-  @ManyToOne(cascade = CascadeType.ALL, optional = true)
+  @ManyToOne(cascade = CascadeType.ALL, optional = false)
   @JoinColumn(name = "COMPANY_ID")
   public Company company;
 
@@ -73,4 +72,7 @@ public class QueueHeader extends PanacheEntityBase {
   @JsonbTransient
   public List<Queue> queue = new ArrayList<>();
 
+  @OneToOne(optional = false)
+  @JoinColumn(name = "CREATED_BY_PERSON_ID")
+  public Person createdBY;
 }

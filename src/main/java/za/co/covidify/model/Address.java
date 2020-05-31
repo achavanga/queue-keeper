@@ -1,5 +1,8 @@
 package za.co.covidify.model;
 
+import java.time.LocalDateTime;
+
+import javax.json.bind.annotation.JsonbDateFormat;
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,7 +20,7 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 public class Address extends PanacheEntityBase {
 
   @Id
-  @SequenceGenerator(name = "addressSequence", sequenceName = "address_id_seq", allocationSize = 1, initialValue = 2)
+  @SequenceGenerator(name = "addressSequence", sequenceName = "address_id_seq", allocationSize = 1, initialValue = 10)
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "addressSequence")
   public Long id;
 
@@ -39,4 +42,7 @@ public class Address extends PanacheEntityBase {
   @Column(name = "LOCATION_PIN", length = 60)
   public String locationPin;
 
+  @Column(name = "DATE_CREATED")
+  @JsonbDateFormat("yyyy/MM/dd HH:mm:ss")
+  public LocalDateTime dateCreated = LocalDateTime.now();
 }
