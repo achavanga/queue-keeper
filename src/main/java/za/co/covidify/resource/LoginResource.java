@@ -12,7 +12,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
@@ -27,6 +26,8 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
+import io.quarkus.mailer.Mail;
+import io.quarkus.mailer.Mailer;
 import lombok.extern.slf4j.Slf4j;
 import za.co.covidify.model.Login;
 import za.co.covidify.model.User;
@@ -43,6 +44,9 @@ public class LoginResource {
   @Inject
   LoginService loginService;
 
+  @Inject
+  Mailer mailer;
+
   @POST
   @Counted(name = "countPostLogin", description = "How many calls have been performed")
   @Timed(name = "timePostLogin", description = "How long it takes to perform check.", unit = MetricUnits.MILLISECONDS)
@@ -53,18 +57,29 @@ public class LoginResource {
     return loginService.login(login);
   }
 
+  // @GET
+  // @Path("/TermsAndConditionsMobile")
+  // @Operation(summary = "TermsAndConditionsMobile")
+  // @APIResponse(responseCode = "200")
+  // @APIResponse(responseCode = "204", description = "No User with that
+  // username found")
+  // @Produces(MediaType.APPLICATION_OCTET_STREAM)
+  // public Response export() {
+  //
+  // AddressCSV addressCSV = new AddressCSV("street", "town1", "country1");
+  // return
+  // Response.ok(addressCSV.toString()).header("Access-Control-Expose-Headers",
+  // "content-disposition, Content-Type")
+  // .header(HttpHeaders.CONTENT_DISPOSITION, "inline;filename=" +
+  // "test.csv").build();
+  //
+  // }
+
   @GET
-  @Path("/TermsAndConditionsMobile")
-  @Operation(summary = "TermsAndConditionsMobile")
-  @APIResponse(responseCode = "200")
-  @APIResponse(responseCode = "204", description = "No User with that username found")
-  @Produces(MediaType.APPLICATION_OCTET_STREAM)
-  public Response export() {
-
-    AddressCSV addressCSV = new AddressCSV("street", "town1", "country1");
-    return Response.ok(addressCSV.toString()).header("Access-Control-Expose-Headers", "content-disposition, Content-Type")
-        .header(HttpHeaders.CONTENT_DISPOSITION, "inline;filename=" + "test.csv").build();
-
+  @Path("/mail")
+  public Response sendASimpleEmail() {
+    mailer.send(Mail.withText("achavanga@gmail.com", "A simple email from quarkus", "This is my body"));
+    return Response.accepted().build();
   }
 
   @Provider
