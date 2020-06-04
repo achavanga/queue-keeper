@@ -31,7 +31,7 @@ import org.jboss.logging.Logger;
 import za.co.covidify.model.Queue;
 import za.co.covidify.services.QueueService;
 
-@Path("/api/v1/Queue")
+@Path("/api/v1/queue")
 @ApplicationScoped
 @Produces("application/json")
 @Consumes("application/json")

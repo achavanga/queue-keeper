@@ -37,7 +37,7 @@ public class Queue extends PanacheEntityBase {
   public QueueStatus status = QueueStatus.CREATED;
 
   @Column(name = "QUEUE_DATE")
-  @JsonbDateFormat("yyyy/MM/dd HH:mm")
+  @JsonbDateFormat("yyyy/MM/dd HH:mm:ss")
   public LocalDateTime queueDateTime = LocalDateTime.now();
 
   @Column(name = "EXPECTED_PROCESSED_TIME")

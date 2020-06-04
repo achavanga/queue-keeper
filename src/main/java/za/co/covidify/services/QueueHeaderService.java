@@ -32,6 +32,10 @@ public class QueueHeaderService {
     return QueueHeader.findById(id);
   }
 
+  public List<QueueHeader> findQueueHeaderByCompnayId(Long id) {
+    return QueueHeader.find("company.id = ?1", id).list();
+  }
+
   @Transactional(REQUIRED)
   public QueueHeader createQueueHeader(QueueHeader queueHeader) {
     if (queueHeader == null) {

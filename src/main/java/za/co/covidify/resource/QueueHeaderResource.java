@@ -31,7 +31,7 @@ import org.jboss.logging.Logger;
 import za.co.covidify.model.QueueHeader;
 import za.co.covidify.services.QueueHeaderService;
 
-@Path("/api/v1/QueueHeader")
+@Path("/api/v1/queueheader")
 @ApplicationScoped
 @Produces("application/json")
 @Consumes("application/json")
@@ -50,6 +50,17 @@ public class QueueHeaderResource {
   @Timed(name = "timeGetAllQueueHeaders", description = "Times how long it takes to invoke the getAllQueueHeaders method", unit = MetricUnits.MILLISECONDS)
   public Response getAllQueueHeaders() {
     return Response.ok(queueHeaderService.findAllQueueHeader()).build();
+  }
+
+  @GET
+  @Path("/company/{id}")
+  @Operation(summary = "Returns all the QueueHeaders from the database")
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = QueueHeader.class, type = SchemaType.ARRAY)))
+  @APIResponse(responseCode = "204", description = "No QueueHeaders found")
+  @Counted(name = "countGetAllQueueHeadersByCo", description = "Counts how many times the getAllQueueHeader method has been invoked")
+  @Timed(name = "timeGetAllQueueHeadersByCo", description = "Times how long it takes to invoke the getAllQueueHeaders method", unit = MetricUnits.MILLISECONDS)
+  public Response getAllQueueHeadersByCompany(@Parameter(description = "QueueHeader identifier", required = true) @PathParam("id") Long id) {
+    return Response.ok(queueHeaderService.findQueueHeaderByCompnayId(id)).build();
   }
 
   @GET

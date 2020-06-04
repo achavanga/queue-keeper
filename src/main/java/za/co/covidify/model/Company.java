@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.json.bind.annotation.JsonbDateFormat;
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
@@ -70,10 +69,12 @@ public class Company extends PanacheEntityBase {
   public List<QueueHeader> queueHeader = new ArrayList<>();
 
   @Column(name = "DATE_CREATED")
-  @JsonbDateFormat("yyyy/MM/dd HH:mm:ss")
+  // @JsonbDateFormat("yyyy/MM/dd HH:mm:ss")
+  @JsonbTransient
   public LocalDateTime dateCreated = LocalDateTime.now();
 
   @Column(name = "IS_COMPANY_ACTIVE")
-  public boolean isCompanyActive = false;
+  @JsonbTransient
+  public boolean isCompanyActive = true;
 
 }

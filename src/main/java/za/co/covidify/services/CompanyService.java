@@ -28,8 +28,19 @@ public class CompanyService {
     return Company.listAll();
   }
 
+  public List<Company> findCompanyByName(String name) {
+    return Company.find("LOWER(companyName) like ?1", "%" + name.toLowerCase() + "%").list();
+  }
+
   public Company findCompanyById(Long id) {
     return Company.findById(id);
+  }
+
+  public Company findCompanyWithQueueHeaderByCompnayId(Long id) {
+    return Company.find(
+        "FROM Company c LEFT JOIN FETCH c.queueHeader q WHERE c.isCompanyActive = true and q.status = 'ACTIVE' and DATE(q.queueDate)= current_date and c.id = ?1",
+        id).firstResult();
+
   }
 
   @Transactional(REQUIRED)

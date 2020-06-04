@@ -44,18 +44,12 @@ public class QueueHeader extends PanacheEntityBase {
   @Column(name = "QUEUE_STATUS", nullable = false)
   public QueueStatus status = QueueStatus.ACTIVE;
 
-  @Column(name = "QUEUE_DATE")
-  @JsonbDateFormat("yyyy/MM/dd HH:mm")
-  public LocalDateTime queueDate = LocalDateTime.now();
-
-  @Column(name = "QUEUE_INTERVALS_IN_MINUTES")
-  public int queueIntervalsInMinutes;
-
-  @Column(name = "NUMBER_ALLOWED_AT_A_TIME")
-  public int numberAllowedAtATime;
-
   @Column(name = "REASON_FOR_STOPPING_QUEUE")
   public String reasonForStopping;
+
+  @Column(name = "QUEUE_DATE")
+  @JsonbTransient
+  public LocalDateTime queueDate = LocalDateTime.now();
 
   @Column(name = "QUEUE_END_DATE")
   @JsonbDateFormat("yyyy/MM/dd HH:mm")
@@ -63,6 +57,12 @@ public class QueueHeader extends PanacheEntityBase {
 
   @Column(name = "TOTAL_IN_QUEUE")
   public Long totalInQueue;
+
+  @Column(name = "QUEUE_INTERVALS_IN_MINUTES")
+  public int queueIntervalsInMinutes;
+
+  @Column(name = "NUMBER_ALLOWED_AT_A_TIME")
+  public int numberAllowedAtATime;
 
   @ManyToOne(cascade = CascadeType.ALL, optional = false)
   @JoinColumn(name = "COMPANY_ID")

@@ -1,6 +1,7 @@
 package za.co.covidify.resource;
 
 import java.security.spec.InvalidKeySpecException;
+import java.util.concurrent.CompletionStage;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -27,7 +28,7 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import io.quarkus.mailer.Mail;
-import io.quarkus.mailer.Mailer;
+import io.quarkus.mailer.reactive.ReactiveMailer;
 import lombok.extern.slf4j.Slf4j;
 import za.co.covidify.model.Login;
 import za.co.covidify.model.User;
@@ -45,7 +46,7 @@ public class LoginResource {
   LoginService loginService;
 
   @Inject
-  Mailer mailer;
+  ReactiveMailer reactiveMailer;
 
   @POST
   @Counted(name = "countPostLogin", description = "How many calls have been performed")
@@ -77,9 +78,14 @@ public class LoginResource {
 
   @GET
   @Path("/mail")
-  public Response sendASimpleEmail() {
-    mailer.send(Mail.withText("achavanga@gmail.com", "A simple email from quarkus", "This is my body"));
-    return Response.accepted().build();
+  // public Response sendASimpleEmail() {
+  // mailer.send(Mail.withText("achavanga@gmail.com", "A simple email from
+  // quarkus", "This is my body"));
+  // return Response.accepted().build();
+  // }
+  public CompletionStage<Response> sendASimpleEmailAsync() {
+    return reactiveMailer.send(Mail.withText("sudhir.gaikwad@outlook.com", "A reactive email from quarkus", "12 Testing sending emails."))
+        .subscribeAsCompletionStage().thenApply(x -> Response.accepted().build());
   }
 
   @Provider

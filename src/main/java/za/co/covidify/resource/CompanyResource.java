@@ -31,7 +31,7 @@ import org.jboss.logging.Logger;
 import za.co.covidify.model.Company;
 import za.co.covidify.services.CompanyService;
 
-@Path("/api/v1/Company")
+@Path("/api/v1/company")
 @ApplicationScoped
 @Produces("application/json")
 @Consumes("application/json")
@@ -71,7 +71,20 @@ public class CompanyResource {
     }
   }
 
+  @GET
+  @Path("/{name}/names")
+  @Operation(summary = "Returns List Company for a given identifier")
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Company.class)))
+  @APIResponse(responseCode = "204", description = "The Company is not found for a given identifier")
+  @Counted(name = "countGetCompanyByName", description = "Counts how many times the getCompany method has been invoked")
+  @Timed(name = "timeGetCompanyByName", description = "Times how long it takes to invoke the getCompany method", unit = MetricUnits.MILLISECONDS)
+  public Response getCompanyByName(@Parameter(description = "Company identifier", required = true) @PathParam("name") String name) {
+
+    return Response.ok(companyService.findCompanyByName(name)).build();
+  }
+
   @POST
+  // @RolesAllowed(Roles.ADMIN)
   @Operation(summary = "Create a new Company ")
   @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Company.class)))
   @Counted(name = "countCreateCompany", description = "Counts how many times the createCompany method has been invoked")
