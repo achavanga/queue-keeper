@@ -22,7 +22,7 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import za.co.covidify.model.BookQueue;
-import za.co.covidify.model.User;
+import za.co.covidify.model.BookQueueRs;
 import za.co.covidify.services.BookQueueService;
 
 @Path("/api/v1/queue/book/")
@@ -39,8 +39,8 @@ public class BookQueueResource {
   @Counted(name = "countPost_BookQueue", description = "How many calls have been performed")
   @Timed(name = "timePost_BookQueue", description = "How long it takes to perform check.", unit = MetricUnits.MILLISECONDS)
   @Operation(summary = "Book Queue service ")
-  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = User.class)))
-  @APIResponse(responseCode = "204", description = "No User with that username found")
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = BookQueueRs.class)))
+
   public Response bookQueue(@Valid BookQueue bookQueue) throws InvalidKeySpecException {
     return Response.ok(bookQueueService.bookMyQueue(bookQueue)).build();
   }

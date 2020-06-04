@@ -72,7 +72,7 @@ public class CompanyResource {
   }
 
   @GET
-  @Path("/{name}/names")
+  @Path("/search/{name}")
   @Operation(summary = "Returns List Company for a given identifier")
   @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Company.class)))
   @APIResponse(responseCode = "204", description = "The Company is not found for a given identifier")
