@@ -1,11 +1,11 @@
-package za.co.covidify.model.dto;
+package za.co.covidify.request.to;
 
 import javax.validation.constraints.NotEmpty;
 
 import lombok.Data;
 
 @Data
-public class Login {
+public class LoginRQ {
 
   @NotEmpty(message = "User name cannot be empty")
   String username;

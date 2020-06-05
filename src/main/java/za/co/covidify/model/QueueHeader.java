@@ -12,13 +12,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -37,26 +37,23 @@ public class QueueHeader extends PanacheEntityBase {
   @Column(name = "NAME")
   public String name;
 
-  @Column(name = "QUEUE_PREFIX")
-  public String queuePrefix;
-
   @Enumerated(EnumType.STRING)
   @Column(name = "QUEUE_STATUS", nullable = false)
   public QueueStatus status = QueueStatus.ACTIVE;
 
   @Column(name = "REASON_FOR_STOPPING_QUEUE")
-  public String reasonForStopping;
+  public String reasonForStopping = "";
 
   @Column(name = "QUEUE_DATE")
   @JsonbTransient
   public LocalDateTime queueDate = LocalDateTime.now();
 
   @Column(name = "QUEUE_END_DATE")
-  @JsonbDateFormat("yyyy/MM/dd HH:mm")
+  @JsonbDateFormat("yyyy/MM/dd HH:mm:ss")
   public LocalDateTime queueEndDateTime = LocalDateTime.now();
 
   @Column(name = "TOTAL_IN_QUEUE")
-  public Long totalInQueue;
+  public Long totalInQueue = 0l;
 
   @Column(name = "QUEUE_INTERVALS_IN_MINUTES")
   public int queueIntervalsInMinutes;
@@ -72,7 +69,7 @@ public class QueueHeader extends PanacheEntityBase {
   @JsonbTransient
   public List<Queue> queue = new ArrayList<>();
 
-  @OneToOne(optional = false)
-  @JoinColumn(name = "CREATED_BY_PERSON_ID")
-  public Person createdBY;
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "CREATED_BY_USER_ID")
+  public User createdBY;
 }

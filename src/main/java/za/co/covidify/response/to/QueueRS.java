@@ -1,4 +1,4 @@
-package za.co.covidify.model.dto;
+package za.co.covidify.response.to;
 
 import java.time.LocalDateTime;
 
@@ -10,7 +10,7 @@ import lombok.Data;
 
 @Data
 @RegisterForReflection
-public class QueueDto {
+public class QueueRS {
   Long id;
 
   @NotNull
@@ -25,8 +25,8 @@ public class QueueDto {
   @JsonbDateFormat("yyyy/MM/dd HH:mm:ss")
   LocalDateTime queueEndDateTime;
 
-  PersonDto person;
+  PersonRS person;
 
-  QueueHeaderDto queueHeader;
+  // QueueHeaderDto queueHeader;
 
 }

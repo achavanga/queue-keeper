@@ -8,7 +8,6 @@ import javax.inject.Inject;
 import javax.json.Json;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -30,8 +29,8 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import io.quarkus.mailer.Mail;
 import io.quarkus.mailer.reactive.ReactiveMailer;
 import lombok.extern.slf4j.Slf4j;
-import za.co.covidify.model.Login;
-import za.co.covidify.model.User;
+import za.co.covidify.request.to.LoginRQ;
+import za.co.covidify.response.to.UserRS;
 import za.co.covidify.services.LoginService;
 
 @Slf4j
@@ -52,32 +51,14 @@ public class LoginResource {
   @Counted(name = "countPostLogin", description = "How many calls have been performed")
   @Timed(name = "timePostLogin", description = "How long it takes to perform check.", unit = MetricUnits.MILLISECONDS)
   @Operation(summary = "Loging service ")
-  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = User.class)))
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = UserRS.class)))
   @APIResponse(responseCode = "204", description = "No User with that username found")
-  public Response login(@Valid Login login) throws InvalidKeySpecException {
-    return loginService.login(login);
+  public Response loginRQ(@Valid LoginRQ loginRQ) throws InvalidKeySpecException {
+    return loginService.loginRQ(loginRQ);
   }
 
   // @GET
-  // @Path("/TermsAndConditionsMobile")
-  // @Operation(summary = "TermsAndConditionsMobile")
-  // @APIResponse(responseCode = "200")
-  // @APIResponse(responseCode = "204", description = "No User with that
-  // username found")
-  // @Produces(MediaType.APPLICATION_OCTET_STREAM)
-  // public Response export() {
-  //
-  // AddressCSV addressCSV = new AddressCSV("street", "town1", "country1");
-  // return
-  // Response.ok(addressCSV.toString()).header("Access-Control-Expose-Headers",
-  // "content-disposition, Content-Type")
-  // .header(HttpHeaders.CONTENT_DISPOSITION, "inline;filename=" +
-  // "test.csv").build();
-  //
-  // }
-
-  @GET
-  @Path("/mail")
+  // @Path("/mail")
   // public Response sendASimpleEmail() {
   // mailer.send(Mail.withText("achavanga@gmail.com", "A simple email from
   // quarkus", "This is my body"));

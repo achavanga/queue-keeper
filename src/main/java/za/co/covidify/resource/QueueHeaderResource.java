@@ -29,6 +29,7 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.logging.Logger;
 
 import za.co.covidify.model.QueueHeader;
+import za.co.covidify.request.to.CreateQueueHeaderRQ;
 import za.co.covidify.services.QueueHeaderService;
 
 @Path("/api/v1/queueheader")
@@ -84,10 +85,10 @@ public class QueueHeaderResource {
 
   @POST
   @Operation(summary = "Create a new QueueHeader ")
-  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = QueueHeader.class)))
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = CreateQueueHeaderRQ.class)))
   @Counted(name = "countCreateQueueHeader", description = "Counts how many times the createQueueHeader method has been invoked")
   @Timed(name = "timeGetCreateQueueHeader", description = "Times how long it takes to invoke the createQueueHeader method", unit = MetricUnits.MILLISECONDS)
-  public Response createQueueHeader(QueueHeader queueHeader) {
+  public Response createQueueHeader(CreateQueueHeaderRQ queueHeader) {
     return Response.ok(queueHeaderService.createQueueHeader(queueHeader)).status(201).build();
   }
 

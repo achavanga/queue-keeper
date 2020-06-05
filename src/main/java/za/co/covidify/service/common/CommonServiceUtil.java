@@ -61,15 +61,11 @@ public class CommonServiceUtil {
    * @param company
    * @return
    */
-  public Company processCompany(Company company) {
-    if (company == null) {
-      throw new WebApplicationException("Invalid request.", 422);
+  public Company processCompany(long id) {
+    if (id != 0l) {
+      return companyService.findCompanyById(id);
     }
-    else
-      if (company.id != null || company.id != 0l) {
-        company = companyService.findCompanyById(company.id);
-      }
-    return company;
+    return null;
   }
 
   /**

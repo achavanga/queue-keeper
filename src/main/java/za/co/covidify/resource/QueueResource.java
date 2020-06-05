@@ -3,6 +3,7 @@ package za.co.covidify.resource;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.json.Json;
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -29,6 +30,9 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.logging.Logger;
 
 import za.co.covidify.model.Queue;
+import za.co.covidify.request.to.BookQueueRQ;
+import za.co.covidify.request.to.CancelQueueRQ;
+import za.co.covidify.response.to.BookQueueRs;
 import za.co.covidify.services.QueueService;
 
 @Path("/api/v1/queue")
@@ -81,8 +85,40 @@ public class QueueResource {
   }
 
   @PUT
-  public Response updateQueue(Queue Queue) {
-    return Response.ok(queueService.updateQueue(Queue)).status(200).build();
+  public Response updateQueue(Queue queue) {
+    return Response.ok(queueService.updateQueue(queue)).status(200).build();
+  }
+
+  @POST
+  @Path("/book")
+  @Counted(name = "countPost_BookQueue", description = "How many calls have been performed")
+  @Timed(name = "timePost_BookQueue", description = "How long it takes to perform check.", unit = MetricUnits.MILLISECONDS)
+  @Operation(summary = "Book Queue service ")
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = BookQueueRs.class)))
+  public Response bookQueueRQ(@Valid BookQueueRQ bookQueueRQ) {
+    return Response.ok(queueService.bookMyQueue(bookQueueRQ)).build();
+  }
+
+  @PUT
+  @Path("/cancel")
+  @Counted(name = "countPut_CancelQueue", description = "How many calls have been performed")
+  @Timed(name = "timePut_CancelQueue", description = "How long it takes to perform check.", unit = MetricUnits.MILLISECONDS)
+  @Operation(summary = "Cancel Queue service ")
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = BookQueueRs.class)))
+  public Response cancleQueue(@Valid CancelQueueRQ cancelQueueRQ) {
+    queueService.cancelMyQueue(cancelQueueRQ);
+    return Response.ok().build();
+  }
+
+  @PUT
+  @Path("/confirm")
+  @Counted(name = "countPut_ConfirmQueue", description = "How many calls have been performed")
+  @Timed(name = "timePut_ConfirmQueue", description = "How long it takes to perform check.", unit = MetricUnits.MILLISECONDS)
+  @Operation(summary = "Confirm Queue service ")
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = BookQueueRs.class)))
+  public Response confirmQueue(@Valid CancelQueueRQ cancelQueueRQ) {
+    queueService.confirmMyQueue(cancelQueueRQ);
+    return Response.ok().build();
   }
 
   @Provider

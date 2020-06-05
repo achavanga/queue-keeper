@@ -1,4 +1,4 @@
-package za.co.covidify.model.dto;
+package za.co.covidify.response.to;
 
 import java.time.LocalDateTime;
 
@@ -10,7 +10,7 @@ import lombok.Data;
 
 @Data
 @RegisterForReflection
-public class CompanyDto {
+public class CompanyRS {
   Long id;
 
   @NotNull
@@ -18,7 +18,7 @@ public class CompanyDto {
 
   String websiteUrl;
 
-  AddressDto addressDto;
+  AddressRS addressRS;
 
   @NotNull
   String emailAddress;
@@ -27,7 +27,7 @@ public class CompanyDto {
 
   String phone;
 
-  PersonDto contactPerson;
+  PersonRS contactPerson;
 
   @JsonbDateFormat("yyyy/MM/dd HH:mm:ss")
   LocalDateTime dateCreated = LocalDateTime.now();

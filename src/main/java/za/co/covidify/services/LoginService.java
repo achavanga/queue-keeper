@@ -10,8 +10,9 @@ import javax.transaction.Transactional;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import za.co.covidify.model.Login;
 import za.co.covidify.model.User;
+import za.co.covidify.model.mapper.ModelMapper;
+import za.co.covidify.request.to.LoginRQ;
 import za.co.covidify.util.Utils;
 
 @ApplicationScoped
@@ -21,11 +22,11 @@ public class LoginService {
   @Inject
   UserService userService;
 
-  public Response login(Login login) throws InvalidKeySpecException {
-    User user = userService.findByName(login.getUsername());
+  public Response loginRQ(LoginRQ loginRQ) throws InvalidKeySpecException {
+    User user = userService.findByName(loginRQ.getUsername());
     if (user != null) {
-      if (Utils.checkPasswordIsSame(user.getPassword(), login.getPassword())) {
-        return Response.ok(user).build();
+      if (Utils.checkPasswordIsSame(user.getPassword(), loginRQ.getPassword())) {
+        return Response.ok(ModelMapper.INSTANCE.toUserDto(user)).build();
       }
       else {
         return Response.status(Status.UNAUTHORIZED).build();

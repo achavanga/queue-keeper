@@ -1,9 +1,9 @@
-package za.co.covidify.model;
+package za.co.covidify.request.to;
 
 import lombok.Data;
 
 @Data
-public class BookQueue {
+public class BookQueueRQ {
 
   long companyId;
 

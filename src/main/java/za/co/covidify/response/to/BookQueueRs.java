@@ -1,4 +1,4 @@
-package za.co.covidify.model;
+package za.co.covidify.response.to;
 
 import java.time.LocalDateTime;
 

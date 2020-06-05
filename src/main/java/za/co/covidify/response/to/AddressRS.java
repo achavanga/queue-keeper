@@ -1,4 +1,4 @@
-package za.co.covidify.model.dto;
+package za.co.covidify.response.to;
 
 import javax.validation.constraints.NotNull;
 
@@ -7,8 +7,9 @@ import lombok.Data;
 
 @Data
 @RegisterForReflection
-public class AddressDto {
-  Long id;
+public class AddressRS {
+
+  long id;
 
   @NotNull
   String addressLine;

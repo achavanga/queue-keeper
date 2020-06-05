@@ -57,6 +57,16 @@ public class User extends PanacheEntityBase {
   @Column(name = "USER_STATUS", nullable = false)
   public UserStatus status = UserStatus.ACTIVE;
 
+  @Size(max = 20)
+  @Column(name = "ACTIVATION_KEY", length = 20)
+  @JsonbTransient
+  public String activationKey;
+
+  @Size(max = 20)
+  @Column(name = "RESET_KEY", length = 20)
+  @JsonbTransient
+  public String resetKey;
+
   @JsonbTransient
   public String getPassword() {
     return password;
