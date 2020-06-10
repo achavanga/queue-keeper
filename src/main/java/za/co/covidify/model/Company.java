@@ -77,4 +77,6 @@ public class Company extends PanacheEntityBase {
   @JsonbTransient
   public boolean isCompanyActive = true;
 
+  @Column(name = "LOGO")
+  public String logo = "";
 }
