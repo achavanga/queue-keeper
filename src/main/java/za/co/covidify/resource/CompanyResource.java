@@ -84,7 +84,6 @@ public class CompanyResource {
   }
 
   @POST
-  // @RolesAllowed(Roles.ADMIN)
   @Operation(summary = "Create a new Company ")
   @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Company.class)))
   @Counted(name = "countCreateCompany", description = "Counts how many times the createCompany method has been invoked")
@@ -95,7 +94,13 @@ public class CompanyResource {
 
   @PUT
   public Response updateCompany(Company company) {
-    return Response.ok(companyService.updateCompany(company)).status(200).build();
+    int i = companyService.updateCompany(company);
+    if (i > 0) {
+      return Response.ok().status(200).build();
+    }
+    else {
+      throw new WebApplicationException("Company with id of " + company.id + " does not exist.", 404);
+    }
   }
 
   @Provider

@@ -3,7 +3,9 @@ package za.co.covidify.services;
 import static javax.transaction.Transactional.TxType.REQUIRED;
 import static javax.transaction.Transactional.TxType.SUPPORTS;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -12,6 +14,7 @@ import javax.ws.rs.WebApplicationException;
 
 import org.jboss.logging.Logger;
 
+import io.quarkus.panache.common.Sort;
 import za.co.covidify.model.Company;
 import za.co.covidify.service.common.CommonServiceUtil;
 
@@ -25,7 +28,7 @@ public class CompanyService {
   private static final Logger LOGGER = Logger.getLogger(CompanyService.class);
 
   public List<Company> findAllCompany() {
-    return Company.listAll();
+    return Company.listAll(Sort.by("companyName"));
   }
 
   public List<Company> findCompanyByName(String name) {
@@ -54,18 +57,23 @@ public class CompanyService {
     return company;
   }
 
-  @Transactional(REQUIRED)
-  public Company updateCompany(Company company) {
+  @Transactional
+  public int updateCompany(Company company) {
     if (company.id == null) {
       throw new WebApplicationException("Company was not set on request.", 422);
     }
-    Company entity = Company.findById(company.id);
 
-    if (entity == null) {
-      throw new WebApplicationException("Company with id of " + company.id + " does not exist.", 404);
-    }
-    entity = company;
-    return company;
+    Map<String, Object> params = new HashMap<>();
+    params.put("companyName", company.companyName);
+    params.put("logo", company.logo);
+    params.put("id", company.id);
+    params.put("emailAddress", company.emailAddress);
+    params.put("websiteUrl", company.websiteUrl);
+    params.put("cellphoneNumber", company.cellphoneNumber);
+
+    return Company.update(
+        "companyName = :companyName, logo =:logo, cellphoneNumber=:cellphoneNumber, " + "websiteUrl=:websiteUrl, emailAddress=:emailAddress  where id = :id",
+        params);
   }
 
 }
