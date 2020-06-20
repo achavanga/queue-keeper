@@ -13,7 +13,7 @@ public class BookQueueRs {
 
   Long companyId;
 
-  String queuNumber;
+  String queueNumber;
 
   @JsonbDateFormat("yyyy/MM/dd HH:mm:ss")
   LocalDateTime expectedPorcessedTime;

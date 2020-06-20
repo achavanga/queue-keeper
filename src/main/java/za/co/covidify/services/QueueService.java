@@ -142,7 +142,7 @@ public class QueueService {
   private void bookQueueResponse(BookQueueRs bookqueueRs, Company company, Queue queue) {
     bookqueueRs.setQueueId(queue.id);
     bookqueueRs.setExpectedPorcessedTime(queue.expectedPorcessedTime);
-    bookqueueRs.setQueuNumber(queue.queueNumber);
+    bookqueueRs.setQueueNumber(queue.queueNumber);
     bookqueueRs.setCompanyId(company.id);
   }
 
