@@ -52,7 +52,7 @@ public class Person extends PanacheEntityBase {
   public String idNumber;
 
   @Column(name = "DATE_CREATED")
-  @JsonbDateFormat("yyyy/MM/dd HH:mm:ss")
+  @JsonbDateFormat("yyyy-MM-dd HH:mm:ss")
   public LocalDateTime dateCreated = LocalDateTime.now();
 
   @OneToOne(optional = false)

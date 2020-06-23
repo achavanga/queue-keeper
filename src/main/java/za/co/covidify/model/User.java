@@ -42,7 +42,7 @@ public class User extends PanacheEntityBase {
   public String password;
 
   @Column(name = "LAST_SIGNED_IN")
-  @JsonbDateFormat("yyyy/MM/dd HH:mm")
+  @JsonbDateFormat("yyyy-MM-dd HH:mm:ss")
   public LocalDateTime lastSignedIn = LocalDateTime.now();
 
   @Enumerated(EnumType.STRING)

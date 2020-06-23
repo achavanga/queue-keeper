@@ -43,6 +43,6 @@ public class Address extends PanacheEntityBase {
   public String locationPin;
 
   @Column(name = "DATE_CREATED")
-  @JsonbDateFormat("yyyy/MM/dd HH:mm:ss")
+  @JsonbDateFormat("yyyy-MM-dd HH:mm:ss")
   public LocalDateTime dateCreated = LocalDateTime.now();
 }

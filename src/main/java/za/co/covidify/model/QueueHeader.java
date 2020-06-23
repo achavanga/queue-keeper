@@ -49,7 +49,7 @@ public class QueueHeader extends PanacheEntityBase {
   public LocalDateTime queueDate = LocalDateTime.now();
 
   @Column(name = "QUEUE_END_DATE")
-  @JsonbDateFormat("yyyy/MM/dd HH:mm:ss")
+  @JsonbDateFormat("yyyy-MM-dd HH:mm:ss")
   public LocalDateTime queueEndDateTime = LocalDateTime.now();
 
   @Column(name = "TOTAL_IN_QUEUE")
