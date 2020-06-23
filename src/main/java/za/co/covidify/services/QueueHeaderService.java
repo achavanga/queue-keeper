@@ -17,7 +17,9 @@ import za.co.covidify.model.Company;
 import za.co.covidify.model.QueueHeader;
 import za.co.covidify.model.QueueStatus;
 import za.co.covidify.model.User;
+import za.co.covidify.model.mapper.ModelMapper;
 import za.co.covidify.request.to.CreateQueueHeaderRQ;
+import za.co.covidify.request.to.QueueHeaderRS;
 import za.co.covidify.service.common.CommonServiceUtil;
 
 @ApplicationScoped
@@ -32,16 +34,16 @@ public class QueueHeaderService {
 
   private static final Logger LOGGER = Logger.getLogger(QueueHeaderService.class);
 
-  public List<QueueHeader> findAllQueueHeader() {
-    return QueueHeader.listAll();
+  public List<QueueHeaderRS> findAllQueueHeader() {
+    return ModelMapper.INSTANCE.toQueueHeaderRSs(QueueHeader.listAll());
   }
 
-  public QueueHeader findQueueHeaderById(Long id) {
-    return QueueHeader.findById(id);
+  public QueueHeaderRS findQueueHeaderById(Long id) {
+    return ModelMapper.INSTANCE.toQueueHeaderRS(QueueHeader.findById(id));
   }
 
-  public List<QueueHeader> findQueueHeaderByCompnayId(Long id) {
-    return QueueHeader.find("company.id = ?1", id).list();
+  public List<QueueHeaderRS> findQueueHeaderByCompnayId(Long id) {
+    return ModelMapper.INSTANCE.toQueueHeaderRSs(QueueHeader.find("company.id = ?1", id).list());
   }
 
   @Transactional(REQUIRED)
@@ -60,7 +62,7 @@ public class QueueHeaderService {
   }
 
   @Transactional(REQUIRED)
-  public QueueHeader createQueueHeader(CreateQueueHeaderRQ createQueueHeaderRQ) {
+  public QueueHeaderRS createQueueHeader(CreateQueueHeaderRQ createQueueHeaderRQ) {
     Company company = commonServiceUtil.processCompany(createQueueHeaderRQ.getCompanyid());
     User user = userService.findUserById(createQueueHeaderRQ.getUserid());
     if (company != null && user != null) {
@@ -74,7 +76,7 @@ public class QueueHeaderService {
       queueHeader.totalInQueue = 0l;
       queueHeader.createdBY = user;
       QueueHeader.persist(queueHeader);
-      return queueHeader;
+      return ModelMapper.INSTANCE.toQueueHeaderRS(queueHeader);
     }
     else {
       throw new WebApplicationException("Invalid request.", 422);

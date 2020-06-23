@@ -14,7 +14,6 @@ import za.co.covidify.model.QueueHeader;
 import za.co.covidify.services.AddressService;
 import za.co.covidify.services.CompanyService;
 import za.co.covidify.services.PersonService;
-import za.co.covidify.services.QueueHeaderService;
 
 @ApplicationScoped
 @Transactional(SUPPORTS)
@@ -29,8 +28,8 @@ public class CommonServiceUtil {
   @Inject
   AddressService addressService;
 
-  @Inject
-  QueueHeaderService queueHeaderService;
+  // @Inject
+  // QueueHeaderService queueHeaderService;
 
   /**
    * 
@@ -97,7 +96,7 @@ public class CommonServiceUtil {
     }
     else
       if (queueHeader.id != null || queueHeader.id != 0l) {
-        queueHeader = queueHeaderService.findQueueHeaderById(queueHeader.id);
+        queueHeader = QueueHeader.findById(queueHeader.id);
       }
     return queueHeader;
   }

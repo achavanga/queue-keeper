@@ -30,6 +30,7 @@ import org.jboss.logging.Logger;
 
 import za.co.covidify.model.QueueHeader;
 import za.co.covidify.request.to.CreateQueueHeaderRQ;
+import za.co.covidify.request.to.QueueHeaderRS;
 import za.co.covidify.services.QueueHeaderService;
 
 @Path("/api/v1/queueheader")
@@ -45,7 +46,7 @@ public class QueueHeaderResource {
 
   @GET
   @Operation(summary = "Returns all the QueueHeaders from the database")
-  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = QueueHeader.class, type = SchemaType.ARRAY)))
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = QueueHeaderRS.class, type = SchemaType.ARRAY)))
   @APIResponse(responseCode = "204", description = "No QueueHeaders found")
   @Counted(name = "countGetAllQueueHeaders", description = "Counts how many times the getAllQueueHeader method has been invoked")
   @Timed(name = "timeGetAllQueueHeaders", description = "Times how long it takes to invoke the getAllQueueHeaders method", unit = MetricUnits.MILLISECONDS)
@@ -56,7 +57,7 @@ public class QueueHeaderResource {
   @GET
   @Path("/company/{id}")
   @Operation(summary = "Returns all the QueueHeaders from the database")
-  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = QueueHeader.class, type = SchemaType.ARRAY)))
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = QueueHeaderRS.class, type = SchemaType.ARRAY)))
   @APIResponse(responseCode = "204", description = "No QueueHeaders found")
   @Counted(name = "countGetAllQueueHeadersByCo", description = "Counts how many times the getAllQueueHeader method has been invoked")
   @Timed(name = "timeGetAllQueueHeadersByCo", description = "Times how long it takes to invoke the getAllQueueHeaders method", unit = MetricUnits.MILLISECONDS)
@@ -67,12 +68,12 @@ public class QueueHeaderResource {
   @GET
   @Path("/{id}")
   @Operation(summary = "Returns a QueueHeader for a given identifier")
-  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = QueueHeader.class)))
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = QueueHeaderRS.class)))
   @APIResponse(responseCode = "204", description = "The QueueHeader is not found for a given identifier")
   @Counted(name = "countGetQueueHeader", description = "Counts how many times the getQueueHeader method has been invoked")
   @Timed(name = "timeGetQueueHeader", description = "Times how long it takes to invoke the getQueueHeader method", unit = MetricUnits.MILLISECONDS)
   public Response getQueueHeader(@Parameter(description = "QueueHeader identifier", required = true) @PathParam("id") Long id) {
-    QueueHeader queueHeader = queueHeaderService.findQueueHeaderById(id);
+    QueueHeaderRS queueHeader = queueHeaderService.findQueueHeaderById(id);
     if (queueHeader != null) {
       LOGGER.debug("Found QueueHeader " + queueHeader);
       return Response.ok(queueHeader).build();
