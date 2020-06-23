@@ -13,7 +13,7 @@ public class QueueRS {
 
   String status;
 
-  LocalDateTime queueDateTime;
+  LocalDateTime expectedPorcessedTime;
 
   PersonRS person;
 
