@@ -8,9 +8,11 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 import za.co.covidify.model.Address;
+import za.co.covidify.model.Queue;
 import za.co.covidify.model.QueueHeader;
 import za.co.covidify.model.User;
 import za.co.covidify.request.to.QueueHeaderRS;
+import za.co.covidify.request.to.QueueRS;
 import za.co.covidify.response.to.AddressRS;
 import za.co.covidify.response.to.UserRS;
 
@@ -42,5 +44,19 @@ public interface ModelMapper {
       queueHeaderRSs.add(queueHeaderRS);
     }
     return queueHeaderRSs;
+  }
+
+  QueueRS toQueueRS(Queue queue);
+
+  Queue dtoQueueHeader(QueueRS queueRS);
+
+  @IterableMapping(elementTargetType = QueueRS.class)
+  default List<QueueRS> toQueueRSs(List<Queue> queues) {
+    List<QueueRS> queueRSs = new ArrayList<>();
+    for (Queue queue : queues) {
+      QueueRS queueRS = toQueueRS(queue);
+      queueRSs.add(queueRS);
+    }
+    return queueRSs;
   }
 }

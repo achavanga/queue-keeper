@@ -32,6 +32,7 @@ import org.jboss.logging.Logger;
 import za.co.covidify.model.Queue;
 import za.co.covidify.request.to.BookQueueRQ;
 import za.co.covidify.request.to.CancelQueueRQ;
+import za.co.covidify.request.to.QueueRS;
 import za.co.covidify.response.to.BookQueueRs;
 import za.co.covidify.services.QueueService;
 
@@ -64,7 +65,7 @@ public class QueueResource {
   @Counted(name = "countGetQueue", description = "Counts how many times the getQueue method has been invoked")
   @Timed(name = "timeGetQueue", description = "Times how long it takes to invoke the getQueue method", unit = MetricUnits.MILLISECONDS)
   public Response getQueue(@Parameter(description = "Queue identifier", required = true) @PathParam("id") Long id) {
-    Queue queue = queueService.findQueueById(id);
+    QueueRS queue = queueService.findQueueById(id);
     if (queue != null) {
       LOGGER.debug("Found Queue " + queue);
       return Response.ok(queue).build();
@@ -75,14 +76,18 @@ public class QueueResource {
     }
   }
 
-  @POST
-  @Operation(summary = "Create a new Queue ")
-  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Queue.class)))
-  @Counted(name = "countCreateQueue", description = "Counts how many times the createQueue method has been invoked")
-  @Timed(name = "timeGetCreateQueue", description = "Times how long it takes to invoke the createQueue method", unit = MetricUnits.MILLISECONDS)
-  public Response createQueue(Queue queue) {
-    return Response.ok(queueService.createQueue(queue)).status(201).build();
-  }
+  // @POST
+  // @Operation(summary = "Create a new Queue ")
+  // @APIResponse(responseCode = "200", content = @Content(mediaType =
+  // MediaType.APPLICATION_JSON, schema = @Schema(implementation =
+  // Queue.class)))
+  // @Counted(name = "countCreateQueue", description = "Counts how many times
+  // the createQueue method has been invoked")
+  // @Timed(name = "timeGetCreateQueue", description = "Times how long it takes
+  // to invoke the createQueue method", unit = MetricUnits.MILLISECONDS)
+  // public Response createQueue(Queue queue) {
+  // return Response.ok(queueService.createQueue(queue)).status(201).build();
+  // }
 
   @PUT
   public Response updateQueue(Queue queue) {

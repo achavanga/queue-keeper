@@ -22,8 +22,10 @@ import za.co.covidify.model.Person;
 import za.co.covidify.model.Queue;
 import za.co.covidify.model.QueueHeader;
 import za.co.covidify.model.QueueStatus;
+import za.co.covidify.model.mapper.ModelMapper;
 import za.co.covidify.request.to.BookQueueRQ;
 import za.co.covidify.request.to.CancelQueueRQ;
+import za.co.covidify.request.to.QueueRS;
 import za.co.covidify.response.to.BookQueueRs;
 import za.co.covidify.service.common.CommonServiceUtil;
 
@@ -44,27 +46,24 @@ public class QueueService {
   @Inject
   CommonServiceUtil commonServiceUtil;
 
-  public List<Queue> findAllQueue() {
-    return Queue.listAll();
+  public List<QueueRS> findAllQueue() {
+    return ModelMapper.INSTANCE.toQueueRSs(Queue.listAll());
   }
 
-  public Queue findQueueById(Long id) {
-    return Queue.findById(id);
+  public QueueRS findQueueById(Long id) {
+    return ModelMapper.INSTANCE.toQueueRS(Queue.findById(id));
   }
-
-  public Queue findQueueByNumber(Long id) {
-    return Queue.findById(id);
-  }
-
-  @Transactional(REQUIRED)
-  public Queue createQueue(Queue queue) {
-    if (queue == null) {
-      throw new WebApplicationException("Invalid request.", 422);
-    }
-    queue.person = commonServiceUtil.processPerson(queue.person, false);
-    queue.queueHeader = commonServiceUtil.processQueueHeader(queue.queueHeader);
-    return persistQueue(queue);
-  }
+  //
+  // @Transactional(REQUIRED)
+  // public QueueRS createQueue(Queue queue) {
+  // if (queue == null) {
+  // throw new WebApplicationException("Invalid request.", 422);
+  // }
+  // queue.person = commonServiceUtil.processPerson(queue.person, false);
+  // queue.queueHeader =
+  // commonServiceUtil.processQueueHeader(queue.queueHeader);
+  // return persistQueue(queue);
+  // }
 
   @Transactional(REQUIRED)
   public Queue updateQueue(Queue queue) {
@@ -103,7 +102,7 @@ public class QueueService {
 
   @Transactional(REQUIRED)
   public void cancelMyQueue(CancelQueueRQ cancelQueueRQ) {
-    Queue entity = findQueueById(cancelQueueRQ.getQueueId());
+    Queue entity = Queue.findById(cancelQueueRQ.getQueueId());
     if (entity != null) {
       if (entity.person.id == cancelQueueRQ.getPersornId()) {
         entity.queueEndDateTime = LocalDateTime.now();
