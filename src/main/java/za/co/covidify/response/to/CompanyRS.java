@@ -1,8 +1,5 @@
 package za.co.covidify.response.to;
 
-import java.time.LocalDateTime;
-
-import javax.json.bind.annotation.JsonbDateFormat;
 import javax.validation.constraints.NotNull;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
@@ -29,9 +26,6 @@ public class CompanyRS {
   String phone;
 
   // PersonRS contactPerson;
-
-  @JsonbDateFormat("yyyy/MM/dd HH:mm:ss")
-  LocalDateTime dateCreated = LocalDateTime.now();
 
   boolean isCompanyActive = false;
 
