@@ -19,7 +19,7 @@ public class CompanyRS {
 
   String websiteUrl;
 
-  AddressRS addressRS;
+  AddressRS address;
 
   @NotNull
   String emailAddress;
@@ -28,7 +28,7 @@ public class CompanyRS {
 
   String phone;
 
-  PersonRS contactPerson;
+  // PersonRS contactPerson;
 
   @JsonbDateFormat("yyyy/MM/dd HH:mm:ss")
   LocalDateTime dateCreated = LocalDateTime.now();
