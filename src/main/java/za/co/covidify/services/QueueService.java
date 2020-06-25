@@ -25,8 +25,9 @@ import za.co.covidify.model.QueueStatus;
 import za.co.covidify.model.mapper.ModelMapper;
 import za.co.covidify.request.to.BookQueueRQ;
 import za.co.covidify.request.to.CancelQueueRQ;
-import za.co.covidify.request.to.QueueRS;
 import za.co.covidify.response.to.BookQueueRs;
+import za.co.covidify.response.to.PersonQueueRS;
+import za.co.covidify.response.to.QueueRS;
 import za.co.covidify.service.common.CommonServiceUtil;
 
 @ApplicationScoped
@@ -53,17 +54,6 @@ public class QueueService {
   public QueueRS findQueueById(Long id) {
     return ModelMapper.INSTANCE.toQueueRS(Queue.findById(id));
   }
-  //
-  // @Transactional(REQUIRED)
-  // public QueueRS createQueue(Queue queue) {
-  // if (queue == null) {
-  // throw new WebApplicationException("Invalid request.", 422);
-  // }
-  // queue.person = commonServiceUtil.processPerson(queue.person, false);
-  // queue.queueHeader =
-  // commonServiceUtil.processQueueHeader(queue.queueHeader);
-  // return persistQueue(queue);
-  // }
 
   @Transactional(REQUIRED)
   public Queue updateQueue(Queue queue) {
@@ -80,10 +70,14 @@ public class QueueService {
     return queue;
   }
 
+  public List<PersonQueueRS> findQueueByPersonId(Long id) {
+    return ModelMapper.INSTANCE.toPersonQueueRSs(Queue.find("person.id = ?1", id).list());
+  }
+
   @Transactional(REQUIRED)
   public BookQueueRs bookMyQueue(BookQueueRQ bookQueueRQ) {
     BookQueueRs bookqueueRs = new BookQueueRs();
-    Person person = personService.findPersonById(bookQueueRQ.getPersornId());
+    Person person = Person.findById(bookQueueRQ.getPersornId());
     if (person != null) {
       Company company = companyService.findCompanyWithQueueHeaderByCompnayId(bookQueueRQ.getCompanyId());
       if (company.queueHeader.size() == 1) {

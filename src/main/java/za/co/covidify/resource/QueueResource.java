@@ -32,8 +32,9 @@ import org.jboss.logging.Logger;
 import za.co.covidify.model.Queue;
 import za.co.covidify.request.to.BookQueueRQ;
 import za.co.covidify.request.to.CancelQueueRQ;
-import za.co.covidify.request.to.QueueRS;
 import za.co.covidify.response.to.BookQueueRs;
+import za.co.covidify.response.to.PersonQueueRS;
+import za.co.covidify.response.to.QueueRS;
 import za.co.covidify.services.QueueService;
 
 @Path("/api/v1/queue")
@@ -76,18 +77,16 @@ public class QueueResource {
     }
   }
 
-  // @POST
-  // @Operation(summary = "Create a new Queue ")
-  // @APIResponse(responseCode = "200", content = @Content(mediaType =
-  // MediaType.APPLICATION_JSON, schema = @Schema(implementation =
-  // Queue.class)))
-  // @Counted(name = "countCreateQueue", description = "Counts how many times
-  // the createQueue method has been invoked")
-  // @Timed(name = "timeGetCreateQueue", description = "Times how long it takes
-  // to invoke the createQueue method", unit = MetricUnits.MILLISECONDS)
-  // public Response createQueue(Queue queue) {
-  // return Response.ok(queueService.createQueue(queue)).status(201).build();
-  // }
+  @GET
+  @Path("/person/{personId}")
+  @Operation(summary = "Returns a Person Queues for a given Person identifier")
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = PersonQueueRS.class, type = SchemaType.ARRAY)))
+  @APIResponse(responseCode = "204", description = "The Person Queue is not found for a given identifier")
+  @Counted(name = "countGetPersonQueue", description = "Counts how many times the getPersonQueue method has been invoked")
+  @Timed(name = "timeGetPersonQueue", description = "Times how long it takes to invoke the getPersonQueue method", unit = MetricUnits.MILLISECONDS)
+  public Response getPersonQueue(@Parameter(description = "Person identifier", required = true) @PathParam("personId") Long personId) {
+    return Response.ok(queueService.findQueueByPersonId(personId)).build();
+  }
 
   @PUT
   public Response updateQueue(Queue queue) {

@@ -30,7 +30,7 @@ import org.jboss.logging.Logger;
 
 import za.co.covidify.model.QueueHeader;
 import za.co.covidify.request.to.CreateQueueHeaderRQ;
-import za.co.covidify.request.to.QueueHeaderRS;
+import za.co.covidify.response.to.QueueHeaderRS;
 import za.co.covidify.services.QueueHeaderService;
 
 @Path("/api/v1/queueheader")

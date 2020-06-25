@@ -17,8 +17,6 @@ public class PersonRS {
 
   String cellphoneNumber;
 
-  String idNumber;
-
   AddressRS address;
 
 }

@@ -14,6 +14,8 @@ import org.jboss.logging.Logger;
 
 import io.quarkus.panache.common.Sort;
 import za.co.covidify.model.Person;
+import za.co.covidify.model.mapper.ModelMapper;
+import za.co.covidify.response.to.PersonRS;
 import za.co.covidify.service.common.CommonServiceUtil;
 
 @ApplicationScoped
@@ -25,22 +27,22 @@ public class PersonService {
 
   private static final Logger LOGGER = Logger.getLogger(PersonService.class);
 
-  public List<Person> findAllPersons() {
-    return Person.listAll(Sort.by("surname"));
+  public List<PersonRS> findAllPersons() {
+    return ModelMapper.INSTANCE.toPersonRSs(Person.listAll(Sort.by("surname")));
   }
 
-  public Person findPersonById(Long id) {
-    return Person.findById(id);
+  public PersonRS findPersonById(Long id) {
+    return ModelMapper.INSTANCE.toPersonRS(Person.findById(id));
   }
 
   @Transactional(REQUIRED)
-  public Person createPerson(Person person) {
+  public PersonRS createPerson(Person person) {
     if (person == null) {
       throw new WebApplicationException("Id was invalidly set on request.", 422);
     }
     commonServiceUtil.processAddress(person.address, true);
     Person.persist(person);
-    return person;
+    return ModelMapper.INSTANCE.toPersonRS(person);
   }
 
   @Transactional(REQUIRED)

@@ -1,4 +1,4 @@
-package za.co.covidify.request.to;
+package za.co.covidify.response.to;
 
 import java.time.LocalDateTime;
 
@@ -6,6 +6,7 @@ import javax.validation.constraints.NotNull;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import lombok.Data;
+import za.co.covidify.request.to.CompanyRS;
 
 @Data
 @RegisterForReflection

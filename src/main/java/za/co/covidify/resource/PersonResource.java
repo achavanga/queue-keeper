@@ -29,6 +29,7 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.logging.Logger;
 
 import za.co.covidify.model.Person;
+import za.co.covidify.response.to.PersonRS;
 import za.co.covidify.services.PersonService;
 
 @Path("/api/v1/person")
@@ -44,7 +45,7 @@ public class PersonResource {
 
   @GET
   @Operation(summary = "Returns all the Persons from the database")
-  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Person.class, type = SchemaType.ARRAY)))
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = PersonRS.class, type = SchemaType.ARRAY)))
   @APIResponse(responseCode = "204", description = "No Persons found")
   @Counted(name = "countGetAllPersons", description = "Counts how many times the getAllPersons method has been invoked")
   @Timed(name = "timeGetAllPersons", description = "Times how long it takes to invoke the getAllPersons method", unit = MetricUnits.MILLISECONDS)
@@ -55,12 +56,12 @@ public class PersonResource {
   @GET
   @Path("/{id}")
   @Operation(summary = "Returns a Person for a given identifier")
-  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Person.class)))
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = PersonRS.class)))
   @APIResponse(responseCode = "204", description = "The Person is not found for a given identifier")
   @Counted(name = "countGetPerson", description = "Counts how many times the getPerson method has been invoked")
   @Timed(name = "timeGetPerson", description = "Times how long it takes to invoke the getPerson method", unit = MetricUnits.MILLISECONDS)
   public Response getPerson(@Parameter(description = "Person identifier", required = true) @PathParam("id") Long id) {
-    Person person = personService.findPersonById(id);
+    PersonRS person = personService.findPersonById(id);
     if (person != null) {
       LOGGER.debug("Found Person " + person);
       return Response.ok(person).build();
@@ -73,7 +74,7 @@ public class PersonResource {
 
   @POST
   @Operation(summary = "Create a new Person ")
-  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Person.class)))
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = PersonRS.class)))
   @Counted(name = "countCreatePerson", description = "Counts how many times the createPerson method has been invoked")
   @Timed(name = "timeGetCreatePerson", description = "Times how long it takes to invoke the createPerson method", unit = MetricUnits.MILLISECONDS)
   public Response createPerson(Person person) {

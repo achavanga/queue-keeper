@@ -5,15 +5,19 @@ import java.util.List;
 
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import za.co.covidify.model.Address;
+import za.co.covidify.model.Person;
 import za.co.covidify.model.Queue;
 import za.co.covidify.model.QueueHeader;
 import za.co.covidify.model.User;
-import za.co.covidify.request.to.QueueHeaderRS;
-import za.co.covidify.request.to.QueueRS;
 import za.co.covidify.response.to.AddressRS;
+import za.co.covidify.response.to.PersonQueueRS;
+import za.co.covidify.response.to.PersonRS;
+import za.co.covidify.response.to.QueueHeaderRS;
+import za.co.covidify.response.to.QueueRS;
 import za.co.covidify.response.to.UserRS;
 
 @Mapper
@@ -58,5 +62,32 @@ public interface ModelMapper {
       queueRSs.add(queueRS);
     }
     return queueRSs;
+  }
+
+  @Mapping(target = "personId", source = "person.id")
+  @Mapping(target = "company", source = "queueHeader.company")
+  @Mapping(target = "queueId", source = "id")
+  PersonQueueRS toPersonQueueRS(Queue queue);
+
+  default List<PersonQueueRS> toPersonQueueRSs(List<Queue> queues) {
+    List<PersonQueueRS> personQueueRSs = new ArrayList<>();
+    for (Queue queue : queues) {
+      PersonQueueRS personQueueRS = toPersonQueueRS(queue);
+      personQueueRSs.add(personQueueRS);
+    }
+    return personQueueRSs;
+  }
+
+  PersonRS toPersonRS(Person person);
+
+  Person toPerson(PersonRS person);
+
+  default List<PersonRS> toPersonRSs(List<Person> persons) {
+    List<PersonRS> personRSs = new ArrayList<>();
+    for (Person person : persons) {
+      PersonRS personRS = toPersonRS(person);
+      personRSs.add(personRS);
+    }
+    return personRSs;
   }
 }

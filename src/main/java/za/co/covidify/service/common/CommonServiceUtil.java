@@ -11,6 +11,8 @@ import za.co.covidify.model.Address;
 import za.co.covidify.model.Company;
 import za.co.covidify.model.Person;
 import za.co.covidify.model.QueueHeader;
+import za.co.covidify.model.mapper.ModelMapper;
+import za.co.covidify.response.to.PersonRS;
 import za.co.covidify.services.AddressService;
 import za.co.covidify.services.CompanyService;
 import za.co.covidify.services.PersonService;
@@ -28,9 +30,6 @@ public class CommonServiceUtil {
   @Inject
   AddressService addressService;
 
-  // @Inject
-  // QueueHeaderService queueHeaderService;
-
   /**
    * 
    * @param person
@@ -38,21 +37,24 @@ public class CommonServiceUtil {
    * @return
    */
   public Person processPerson(Person person, boolean isCreate) {
+    PersonRS personRS;
     if (person == null) {
       throw new WebApplicationException("Invalid Person details  request.", 422);
     }
     else
+
       if (isCreate && (person.id == null || person.id == 0l)) {
-        person = personService.createPerson(person);
+        personRS = personService.createPerson(person);
       }
       else
         if (person.id != null || person.id != 0l) {
-          person = personService.findPersonById(person.id);
+          personRS = personService.findPersonById(person.id);
         }
         else {
           throw new WebApplicationException("Invalid Person details request.", 422);
         }
-    return person;
+
+    return ModelMapper.INSTANCE.toPerson(personRS);
   }
 
   /**

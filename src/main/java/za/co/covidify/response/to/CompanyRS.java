@@ -11,6 +11,7 @@ import lombok.Data;
 @Data
 @RegisterForReflection
 public class CompanyRS {
+
   Long id;
 
   @NotNull

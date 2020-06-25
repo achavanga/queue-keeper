@@ -19,7 +19,7 @@ import za.co.covidify.model.QueueStatus;
 import za.co.covidify.model.User;
 import za.co.covidify.model.mapper.ModelMapper;
 import za.co.covidify.request.to.CreateQueueHeaderRQ;
-import za.co.covidify.request.to.QueueHeaderRS;
+import za.co.covidify.response.to.QueueHeaderRS;
 import za.co.covidify.service.common.CommonServiceUtil;
 
 @ApplicationScoped
