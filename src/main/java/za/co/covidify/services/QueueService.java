@@ -58,14 +58,13 @@ public class QueueService {
   @Transactional(REQUIRED)
   public Queue updateQueue(Queue queue) {
     if (queue.id == null) {
-      throw new WebApplicationException("Queue was not set on request.", 422);
+      throw new WebApplicationException("Queue was not set on request.", 400);
     }
     Queue entity = Queue.findById(queue.id);
 
     if (entity == null) {
-      throw new WebApplicationException("Queue with id of " + queue.id + " does not exist.", 404);
+      throw new WebApplicationException("Queue with id of " + queue.id + " does not exist.", 204);
     }
-
     entity = queue;
     return queue;
   }
@@ -89,7 +88,7 @@ public class QueueService {
       }
     }
     else {
-      throw new WebApplicationException("Person cannot be emprty", 404);
+      throw new WebApplicationException("Person cannot be emprty", 400);
     }
     return bookqueueRs;
   }

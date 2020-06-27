@@ -29,7 +29,7 @@ public class AddressService {
   @Transactional(REQUIRED)
   public Address createAddress(Address address) {
     if (address == null) {
-      throw new WebApplicationException("Invalid request.", 422);
+      throw new WebApplicationException("Invalid request.", 400);
     }
     Address.persist(address);
     return address;
@@ -38,12 +38,12 @@ public class AddressService {
   @Transactional(REQUIRED)
   public Address updateAddress(Address address) {
     if (address.id == null) {
-      throw new WebApplicationException("Address was not set on request.", 422);
+      throw new WebApplicationException("Address was not set on request.", 400);
     }
     Address entity = Address.findById(address.id);
 
     if (entity == null) {
-      throw new WebApplicationException("Address with id of " + address.id + " does not exist.", 404);
+      throw new WebApplicationException("Address with id of " + address.id + " does not exist.", 204);
     }
 
     entity = address;

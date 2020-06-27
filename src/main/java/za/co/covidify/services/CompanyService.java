@@ -50,7 +50,7 @@ public class CompanyService {
   @Transactional(REQUIRED)
   public Company createCompany(Company company) {
     if (company == null) {
-      throw new WebApplicationException("Invalid request.", 422);
+      throw new WebApplicationException("Invalid request.", 400);
     }
     commonServiceUtil.processPerson(company.contactPerson, false);
     commonServiceUtil.processAddress(company.address, true);
@@ -61,7 +61,7 @@ public class CompanyService {
   @Transactional
   public int updateCompany(Company company) {
     if (company.id == null) {
-      throw new WebApplicationException("Company was not set on request.", 422);
+      throw new WebApplicationException("Company was not set on request.", 400);
     }
 
     Map<String, Object> params = new HashMap<>();

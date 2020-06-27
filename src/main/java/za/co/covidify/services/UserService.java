@@ -40,7 +40,7 @@ public class UserService {
   @Transactional(REQUIRED)
   public User createUser(User user) {
     if (user == null) {
-      throw new WebApplicationException("Invalid request set on request.", 422);
+      throw new WebApplicationException("Invalid request set on request.", 400);
     }
     user.password = Utils.generatePasswordHash(user.getPassword());
     commonServiceUtil.processPerson(user.person, true);
@@ -51,12 +51,12 @@ public class UserService {
   @Transactional(REQUIRED)
   public User updateUser(User user) {
     if (user == null || user.id == null) {
-      throw new WebApplicationException("User was not set on request.", 422);
+      throw new WebApplicationException("User was not set on request.", 400);
     }
     User entity = User.findById(user.id);
 
     if (entity == null) {
-      throw new WebApplicationException("User with id of " + user.id + " does not exist.", 404);
+      throw new WebApplicationException("User with id of " + user.id + " does not exist.", 204);
     }
     entity = user;
     return user;

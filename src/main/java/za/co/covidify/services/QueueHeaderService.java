@@ -49,12 +49,12 @@ public class QueueHeaderService {
   @Transactional(REQUIRED)
   public QueueHeader updateQueueHeader(QueueHeader queueHeader) {
     if (queueHeader.id == null) {
-      throw new WebApplicationException("Queue was not set on request.", 422);
+      throw new WebApplicationException("Queue was not set on request.", 400);
     }
     QueueHeader entity = QueueHeader.findById(queueHeader.id);
 
     if (entity == null) {
-      throw new WebApplicationException("Queue with id of " + queueHeader.id + " does not exist.", 404);
+      throw new WebApplicationException("Queue with id of " + queueHeader.id + " does not exist.", 204);
     }
 
     entity = queueHeader;
@@ -79,7 +79,7 @@ public class QueueHeaderService {
       return ModelMapper.INSTANCE.toQueueHeaderRS(queueHeader);
     }
     else {
-      throw new WebApplicationException("Invalid request.", 422);
+      throw new WebApplicationException("Invalid request.", 400);
     }
   }
 

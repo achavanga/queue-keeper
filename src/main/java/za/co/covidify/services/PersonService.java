@@ -38,7 +38,7 @@ public class PersonService {
   @Transactional(REQUIRED)
   public PersonRS createPerson(Person person) {
     if (person == null) {
-      throw new WebApplicationException("Id was invalidly set on request.", 422);
+      throw new WebApplicationException("Id was invalidly set on request.", 400);
     }
     commonServiceUtil.processAddress(person.address, true);
     Person.persist(person);
@@ -48,12 +48,12 @@ public class PersonService {
   @Transactional(REQUIRED)
   public Person updatePerson(Person person) {
     if (person.id == null) {
-      throw new WebApplicationException("User was not set on request.", 422);
+      throw new WebApplicationException("User was not set on request.", 400);
     }
     Person entity = Person.findById(person.id);
 
     if (entity == null) {
-      throw new WebApplicationException("User with id of " + person.id + " does not exist.", 404);
+      throw new WebApplicationException("User with id of " + person.id + " does not exist.", 204);
     }
     entity = person;
     return person;
