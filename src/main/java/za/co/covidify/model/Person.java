@@ -55,7 +55,7 @@ public class Person extends PanacheEntityBase {
   @JsonbDateFormat("yyyy-MM-dd HH:mm:ss")
   public LocalDateTime dateCreated = LocalDateTime.now();
 
-  @OneToOne(optional = false)
+  @OneToOne(optional = true)
   @JoinColumn(name = "ADDRESS_ID")
   public Address address;
 

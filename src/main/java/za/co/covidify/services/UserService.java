@@ -12,7 +12,10 @@ import javax.ws.rs.WebApplicationException;
 
 import org.jboss.logging.Logger;
 
+import za.co.covidify.model.Address;
+import za.co.covidify.model.Person;
 import za.co.covidify.model.User;
+import za.co.covidify.request.to.UserRQ;
 import za.co.covidify.service.common.CommonServiceUtil;
 import za.co.covidify.util.Utils;
 
@@ -38,14 +41,29 @@ public class UserService {
   }
 
   @Transactional(REQUIRED)
-  public User createUser(User user) {
-    if (user == null) {
+  public User createUser(UserRQ userRQ) {
+    User user = new User();
+    if (userRQ == null) {
       throw new WebApplicationException("Invalid request set on request.", 400);
     }
-    user.password = Utils.generatePasswordHash(user.getPassword());
+    user.password = Utils.generatePasswordHash(userRQ.getPassword());
+    Person person = new Person();
+    person.name = userRQ.getName();
+    person.surname = userRQ.getSurname();
+    person.emailAddress = userRQ.getEmailAddress();
+    person.cellphoneNumber = userRQ.getCellphoneNumber();
+
+    Address address = new Address();
+    address.locationPin = userRQ.getLocationPin();
+    address.postalCode = userRQ.getPostalCode();
+    address.addressLine = userRQ.getPostalCode();
+
+    person.address = address;
+    user.person = person;
+
     commonServiceUtil.processPerson(user.person, true);
     User.persist(user);
-    return user;
+    return user;// ModelMapper.INSTANCE.toUserDto(user);
   }
 
   @Transactional(REQUIRED)

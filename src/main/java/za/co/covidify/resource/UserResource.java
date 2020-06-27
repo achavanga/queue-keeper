@@ -3,6 +3,7 @@ package za.co.covidify.resource;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.json.Json;
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -29,6 +30,7 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.logging.Logger;
 
 import za.co.covidify.model.User;
+import za.co.covidify.request.to.UserRQ;
 import za.co.covidify.services.UserService;
 
 @Path("/api/v1/user")
@@ -93,11 +95,12 @@ public class UserResource {
 
   @POST
   @Operation(summary = "Create a new user ")
-  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = User.class)))
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = UserRQ.class)))
   @Counted(name = "countCreateUser", description = "Counts how many times the createUser method has been invoked")
   @Timed(name = "timeGetCreateUser", description = "Times how long it takes to invoke the createUser method", unit = MetricUnits.MILLISECONDS)
-  public Response createUser(User user) {
-    return Response.ok(userService.createUser(user)).status(201).build();
+  public Response createUser(@Valid UserRQ userRq) {
+    User user = userService.createUser(userRq);
+    return Response.ok(user.id).status(201).build();
   }
 
   @PUT

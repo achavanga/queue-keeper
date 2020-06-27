@@ -1,8 +1,7 @@
 package za.co.covidify.model;
 
 public enum UserType {
-  MANAGER("Manage of a company"),
-  WORKER("Genral employee"),
+  SHOP_USER("Shop user"),
   GENERAL_USER("Just a user"),
   SYS_ADMIN("System administrator of the system");
 
