@@ -73,6 +73,7 @@ public class UserResource {
 
   @GET
   @Path("/{username}")
+  // throw new PersonException("Person cannot be emprty");
   @Operation(summary = "Returns a user for a given user name")
   @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = User.class)))
   @APIResponse(responseCode = "204", description = "The user is not found for a given username")

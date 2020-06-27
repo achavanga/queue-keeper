@@ -6,6 +6,7 @@ import static javax.transaction.Transactional.TxType.SUPPORTS;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -39,10 +40,10 @@ public class CompanyService {
     return Company.findById(id);
   }
 
-  public Company findCompanyWithQueueHeaderByCompnayId(Long id) {
+  public Optional<Company> findCompanyWithQueueHeaderByCompnayId(Long id) {
     return Company.find(
         "FROM Company c LEFT JOIN FETCH c.queueHeader q WHERE c.isCompanyActive = true and q.status = 'ACTIVE' and DATE(q.queueDate)= current_date and c.id = ?1",
-        id).firstResult();
+        id).firstResultOptional();
 
   }
 

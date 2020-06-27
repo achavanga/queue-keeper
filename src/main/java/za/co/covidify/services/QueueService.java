@@ -5,6 +5,7 @@ import static javax.transaction.Transactional.TxType.SUPPORTS;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -78,19 +79,16 @@ public class QueueService {
     BookQueueRs bookqueueRs = new BookQueueRs();
     Person person = Person.findById(bookQueueRQ.getPersornId());
     if (person != null) {
-      Company company = companyService.findCompanyWithQueueHeaderByCompnayId(bookQueueRQ.getCompanyId());
-      if (company.queueHeader.size() == 1) {
-        generateQueueDetails(bookqueueRs, person, company);
-        QueueHeader.update("totalInQueue = totalInQueue + 1  where id = ?1", company.queueHeader.get(0).id);
+      Optional<Company> company = companyService.findCompanyWithQueueHeaderByCompnayId(bookQueueRQ.getCompanyId());
+      if (company.isPresent()) {
+        generateQueueDetails(bookqueueRs, person, company.get());
+        QueueHeader.update("totalInQueue = totalInQueue + 1  where id = ?1", company.get().queueHeader.get(0).id);
       }
       else {
-        // throw new BookQueueException("No Active queue for " +
-        // company.companyName);
-        throw new WebApplicationException("No Active queue for " + company.companyName, 204);
+        throw new WebApplicationException("No Active queue for company with ID  " + bookQueueRQ.getCompanyId(), 204);
       }
     }
     else {
-      // throw new PersonException("Person cannot be emprty");
       throw new WebApplicationException("Person cannot be emprty", 404);
     }
     return bookqueueRs;
