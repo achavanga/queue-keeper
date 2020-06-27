@@ -14,7 +14,6 @@ import javax.ws.rs.WebApplicationException;
 
 import org.jboss.logging.Logger;
 
-import za.co.covidify.exception.BookQueueException;
 import za.co.covidify.exception.PersonException;
 import za.co.covidify.exception.QueueException;
 import za.co.covidify.model.Company;
@@ -85,11 +84,14 @@ public class QueueService {
         QueueHeader.update("totalInQueue = totalInQueue + 1  where id = ?1", company.queueHeader.get(0).id);
       }
       else {
-        throw new BookQueueException("No Active queue for  " + company.companyName);
+        // throw new BookQueueException("No Active queue for " +
+        // company.companyName);
+        throw new WebApplicationException("No Active queue for " + company.companyName, 204);
       }
     }
     else {
-      throw new PersonException("Person cannot be emprty");
+      // throw new PersonException("Person cannot be emprty");
+      throw new WebApplicationException("Person cannot be emprty", 404);
     }
     return bookqueueRs;
   }
