@@ -26,4 +26,6 @@ public class PersonQueueRS {
 
   String companyName;
 
+  String companylogo;
+
 }

@@ -71,6 +71,7 @@ public interface ModelMapper {
   @Mapping(target = "queueId", source = "id")
   @Mapping(target = "companyId", source = "queueHeader.company.id")
   @Mapping(target = "companyName", source = "queueHeader.company.companyName")
+  @Mapping(target = "companylogo", source = "queueHeader.company.logo")
   PersonQueueRS toPersonQueueRS(Queue queue);
 
   default List<PersonQueueRS> toPersonQueueRSs(List<Queue> queues) {
