@@ -13,6 +13,7 @@ import za.co.covidify.model.Person;
 import za.co.covidify.model.Queue;
 import za.co.covidify.model.QueueHeader;
 import za.co.covidify.model.User;
+import za.co.covidify.request.to.UserRQ;
 import za.co.covidify.response.to.AddressRS;
 import za.co.covidify.response.to.PersonQueueRS;
 import za.co.covidify.response.to.PersonRS;
@@ -35,6 +36,8 @@ public interface ModelMapper {
   UserRS toUserDto(User user);
 
   User dtoToUser(UserRS userRs);
+
+  User toUser(UserRQ userRQ);
 
   QueueHeaderRS toQueueHeaderRS(QueueHeader queueHeader);
 

@@ -15,6 +15,8 @@ import org.jboss.logging.Logger;
 import za.co.covidify.model.Address;
 import za.co.covidify.model.Person;
 import za.co.covidify.model.User;
+import za.co.covidify.model.UserStatus;
+import za.co.covidify.model.mapper.ModelMapper;
 import za.co.covidify.request.to.UserRQ;
 import za.co.covidify.service.common.CommonServiceUtil;
 import za.co.covidify.util.Utils;
@@ -46,6 +48,9 @@ public class UserService {
     if (userRQ == null) {
       throw new WebApplicationException("Invalid request set on request.", 400);
     }
+
+    user = ModelMapper.INSTANCE.toUser(userRQ);
+
     user.password = Utils.generatePasswordHash(userRQ.getPassword());
     Person person = new Person();
     person.name = userRQ.getName();
@@ -60,6 +65,7 @@ public class UserService {
 
     person.address = address;
     user.person = person;
+    user.status = UserStatus.ACTIVE;
 
     commonServiceUtil.processPerson(user.person, true);
     User.persist(user);
