@@ -22,6 +22,8 @@ public class PersonQueueRS {
 
   LocalDateTime expectedPorcessedTime;
 
-  CompanyRS company;
+  Long companyId;
+
+  String companyName;
 
 }
