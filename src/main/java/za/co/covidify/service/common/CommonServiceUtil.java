@@ -64,7 +64,7 @@ public class CommonServiceUtil {
    */
   public Company processCompany(long id) {
     if (id != 0l) {
-      return companyService.findCompanyById(id);
+      return Company.findById(id);
     }
     return null;
   }

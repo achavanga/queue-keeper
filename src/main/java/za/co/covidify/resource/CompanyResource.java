@@ -29,6 +29,7 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.logging.Logger;
 
 import za.co.covidify.model.Company;
+import za.co.covidify.response.to.CompanyRS;
 import za.co.covidify.services.CompanyService;
 
 @Path("/api/v1/company")
@@ -55,12 +56,12 @@ public class CompanyResource {
   @GET
   @Path("/{id}")
   @Operation(summary = "Returns a Company for a given identifier")
-  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Company.class)))
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = CompanyRS.class)))
   @APIResponse(responseCode = "204", description = "The Company is not found for a given identifier")
   @Counted(name = "countGetCompany", description = "Counts how many times the getCompany method has been invoked")
   @Timed(name = "timeGetCompany", description = "Times how long it takes to invoke the getCompany method", unit = MetricUnits.MILLISECONDS)
   public Response getCompany(@Parameter(description = "Company identifier", required = true) @PathParam("id") Long id) {
-    Company company = companyService.findCompanyById(id);
+    CompanyRS company = companyService.findCompanyById(id);
     if (company != null) {
       LOGGER.debug("Found Company " + company);
       return Response.ok(company).build();
@@ -74,7 +75,7 @@ public class CompanyResource {
   @GET
   @Path("/search/{name}")
   @Operation(summary = "Returns List Company for a given identifier")
-  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Company.class)))
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = CompanyRS.class)))
   @APIResponse(responseCode = "204", description = "The Company is not found for a given identifier")
   @Counted(name = "countGetCompanyByName", description = "Counts how many times the getCompany method has been invoked")
   @Timed(name = "timeGetCompanyByName", description = "Times how long it takes to invoke the getCompany method", unit = MetricUnits.MILLISECONDS)
@@ -85,7 +86,7 @@ public class CompanyResource {
 
   @POST
   @Operation(summary = "Create a new Company ")
-  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Company.class)))
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = CompanyRS.class)))
   @Counted(name = "countCreateCompany", description = "Counts how many times the createCompany method has been invoked")
   @Timed(name = "timeGetCreateCompany", description = "Times how long it takes to invoke the createCompany method", unit = MetricUnits.MILLISECONDS)
   public Response createCompany(Company company) {

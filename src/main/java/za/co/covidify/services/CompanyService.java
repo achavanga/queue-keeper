@@ -17,6 +17,8 @@ import org.jboss.logging.Logger;
 
 import io.quarkus.panache.common.Sort;
 import za.co.covidify.model.Company;
+import za.co.covidify.model.mapper.ModelMapper;
+import za.co.covidify.response.to.CompanyRS;
 import za.co.covidify.service.common.CommonServiceUtil;
 
 @ApplicationScoped
@@ -32,12 +34,12 @@ public class CompanyService {
     return Company.listAll(Sort.by("companyName"));
   }
 
-  public List<Company> findCompanyByName(String name) {
-    return Company.find("LOWER(companyName) like ?1", "%" + name.toLowerCase() + "%").list();
+  public List<CompanyRS> findCompanyByName(String name) {
+    return ModelMapper.INSTANCE.toCompanyRSs(Company.find("LOWER(companyName) like ?1", "%" + name.toLowerCase() + "%").list());
   }
 
-  public Company findCompanyById(Long id) {
-    return Company.findById(id);
+  public CompanyRS findCompanyById(Long id) {
+    return ModelMapper.INSTANCE.toCompanyRS(Company.findById(id));
   }
 
   public Optional<Company> findCompanyWithQueueHeaderByCompnayId(Long id) {
@@ -48,14 +50,14 @@ public class CompanyService {
   }
 
   @Transactional(REQUIRED)
-  public Company createCompany(Company company) {
+  public CompanyRS createCompany(Company company) {
     if (company == null) {
       throw new WebApplicationException("Invalid request.", 400);
     }
     commonServiceUtil.processPerson(company.contactPerson, false);
     commonServiceUtil.processAddress(company.address, true);
     Company.persist(company);
-    return company;
+    return ModelMapper.INSTANCE.toCompanyRS(company);
   }
 
   @Transactional

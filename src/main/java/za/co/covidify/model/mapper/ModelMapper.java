@@ -9,12 +9,14 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import za.co.covidify.model.Address;
+import za.co.covidify.model.Company;
 import za.co.covidify.model.Person;
 import za.co.covidify.model.Queue;
 import za.co.covidify.model.QueueHeader;
 import za.co.covidify.model.User;
 import za.co.covidify.request.to.UserRQ;
 import za.co.covidify.response.to.AddressRS;
+import za.co.covidify.response.to.CompanyRS;
 import za.co.covidify.response.to.PersonQueueRS;
 import za.co.covidify.response.to.PersonRS;
 import za.co.covidify.response.to.QueueHeaderRS;
@@ -95,4 +97,19 @@ public interface ModelMapper {
     }
     return personRSs;
   }
+
+  CompanyRS toCompanyRS(Company company);
+
+  Company toCompany(CompanyRS company);
+
+  @Mapping(target = "contactPersonId", source = "company.contactPerson.id")
+  default List<CompanyRS> toCompanyRSs(List<Company> companies) {
+    List<CompanyRS> companyRSs = new ArrayList<>();
+    for (Company company : companies) {
+      CompanyRS companyRS = toCompanyRS(company);
+      companyRSs.add(companyRS);
+    }
+    return companyRSs;
+  }
+
 }

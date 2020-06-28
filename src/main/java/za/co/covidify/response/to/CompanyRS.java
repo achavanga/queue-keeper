@@ -25,8 +25,10 @@ public class CompanyRS {
 
   String phone;
 
+  long contactPersonId;
+
   // PersonRS contactPerson;
 
-  boolean isCompanyActive = false;
+  String logo = "";
 
 }
