@@ -2,9 +2,7 @@ package za.co.covidify.model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.json.bind.annotation.JsonbDateFormat;
 import javax.json.bind.annotation.JsonbTransient;
@@ -21,9 +19,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
@@ -42,11 +37,11 @@ public class Company extends PanacheEntityBase {
 
   @Column(name = "COMPANY_WEBSITE_URL", length = 200)
   public String websiteUrl;
-
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
-  @LazyCollection(LazyCollectionOption.FALSE)
-  @JsonbTransient
-  public Set<Person> companyEmployees = new HashSet<>();
+  //
+  // @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
+  // @LazyCollection(LazyCollectionOption.FALSE)
+  // @JsonbTransient
+  // public Set<Person> companyEmployees = new HashSet<>();
 
   @OneToOne(optional = false)
   @JoinColumn(name = "ADDRESS_ID")
