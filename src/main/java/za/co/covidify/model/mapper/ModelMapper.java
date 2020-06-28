@@ -98,11 +98,11 @@ public interface ModelMapper {
     return personRSs;
   }
 
+  @Mapping(target = "contactPersonId", source = "company.contactPerson.id")
   CompanyRS toCompanyRS(Company company);
 
   Company toCompany(CompanyRS company);
 
-  @Mapping(target = "contactPersonId", source = "company.contactPerson.id")
   default List<CompanyRS> toCompanyRSs(List<Company> companies) {
     List<CompanyRS> companyRSs = new ArrayList<>();
     for (Company company : companies) {
