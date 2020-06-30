@@ -49,6 +49,10 @@ public class CompanyService {
 
   }
 
+  public List<Company> findCompanyByPerson(long personId) {
+    return Company.find("contactPerson.id = ?1", personId).list();
+  }
+
   @Transactional(REQUIRED)
   public CompanyRS createCompany(Company company) {
     if (company == null) {

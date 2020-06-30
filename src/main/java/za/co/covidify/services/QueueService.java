@@ -15,12 +15,14 @@ import javax.ws.rs.WebApplicationException;
 
 import org.jboss.logging.Logger;
 
+import za.co.covidify.model.Address;
 import za.co.covidify.model.Company;
 import za.co.covidify.model.Person;
 import za.co.covidify.model.Queue;
 import za.co.covidify.model.QueueHeader;
 import za.co.covidify.model.QueueStatus;
 import za.co.covidify.model.mapper.ModelMapper;
+import za.co.covidify.request.to.BookQueueForOtherRQ;
 import za.co.covidify.request.to.BookQueueRQ;
 import za.co.covidify.request.to.CancelQueueRQ;
 import za.co.covidify.response.to.BookQueueRs;
@@ -69,6 +71,26 @@ public class QueueService {
 
   public List<PersonQueueRS> findQueueByPersonId(Long id) {
     return ModelMapper.INSTANCE.toPersonQueueRSs(Queue.find("person.id = ?1", id).list());
+  }
+
+  @Transactional(REQUIRED)
+  public BookQueueRs bookQueueForOther(BookQueueForOtherRQ bookQueueForOtherRQ) {
+    Person person = new Person();
+    person.name = bookQueueForOtherRQ.getName();
+    person.surname = bookQueueForOtherRQ.getSurname();
+    person.emailAddress = bookQueueForOtherRQ.getEmailAddress();
+    person.cellphoneNumber = bookQueueForOtherRQ.getCellphoneNumber();
+
+    Address address = new Address();
+    address.locationPin = "000";
+    address.postalCode = "00";
+    person.address = address;
+    commonServiceUtil.processPerson(person, true);
+
+    BookQueueRQ bookQueueRQ = new BookQueueRQ();
+    bookQueueRQ.setCompanyId(bookQueueForOtherRQ.getCompanyId());
+    bookQueueRQ.setPersornId(person.id);
+    return bookMyQueue(bookQueueRQ);
   }
 
   @Transactional(REQUIRED)

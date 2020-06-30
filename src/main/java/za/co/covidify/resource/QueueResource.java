@@ -30,6 +30,7 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.logging.Logger;
 
 import za.co.covidify.model.Queue;
+import za.co.covidify.request.to.BookQueueForOtherRQ;
 import za.co.covidify.request.to.BookQueueRQ;
 import za.co.covidify.request.to.CancelQueueRQ;
 import za.co.covidify.response.to.BookQueueRs;
@@ -91,6 +92,16 @@ public class QueueResource {
   @PUT
   public Response updateQueue(Queue queue) {
     return Response.ok(queueService.updateQueue(queue)).status(200).build();
+  }
+
+  @POST
+  @Path("/book/other")
+  @Counted(name = "countPost_BookQueueForOther", description = "How many calls have been performed")
+  @Timed(name = "timePost_BookQueueForOther", description = "How long it takes to perform check.", unit = MetricUnits.MILLISECONDS)
+  @Operation(summary = "Book Queue for Others service ")
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = BookQueueRs.class)))
+  public Response bookQueueForOtherRQ(@Valid BookQueueForOtherRQ bookQueueForOtherRQ) {
+    return Response.ok(queueService.bookQueueForOther(bookQueueForOtherRQ)).build();
   }
 
   @POST

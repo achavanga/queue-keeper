@@ -24,7 +24,7 @@ public class Address extends PanacheEntityBase {
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "addressSequence")
   public Long id;
 
-  @Column(name = "ADDRESS_LINE1", nullable = false, length = 60)
+  @Column(name = "ADDRESS_LINE1", length = 60)
   public String addressLine;
 
   @Column(name = "ADDRESS_LINE2")
@@ -36,7 +36,7 @@ public class Address extends PanacheEntityBase {
   @Column(name = "CITY", length = 60)
   public String city;
 
-  @Column(name = "POSTAL_CODE", nullable = false, length = 10)
+  @Column(name = "POSTAL_CODE", length = 10)
   public String postalCode;
 
   @Column(name = "LOCATION_PIN", length = 60)

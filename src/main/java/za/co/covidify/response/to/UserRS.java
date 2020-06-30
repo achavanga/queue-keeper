@@ -17,4 +17,6 @@ public class UserRS {
 
   String status;
 
+  Long companyId;
+
 }
