@@ -45,7 +45,7 @@ public class QueueHeaderService {
   }
 
   public List<QueueHeaderRS> findQueueHeaderByCompnayId(Long id) {
-    return ModelMapper.INSTANCE.toQueueHeaderRSs(QueueHeader.find("company.id = ?1 and ", id).list());
+    return ModelMapper.INSTANCE.toQueueHeaderRSs(QueueHeader.find("company.id = ?1", id).list());
   }
 
   @Transactional(REQUIRED)

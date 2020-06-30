@@ -19,11 +19,12 @@ public class QueueHeaderRS {
 
   int numberAllowedAtATime;
 
-  long companyid;
+  // long companyid;
 
   Long totalInQueue = 0l;
 
   LocalDateTime queueDate;
 
   CompanyRS company;
+
 }
