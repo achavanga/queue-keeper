@@ -108,7 +108,7 @@ public class QueueResource {
   @Counted(name = "countPut_CancelQueue", description = "How many calls have been performed")
   @Timed(name = "timePut_CancelQueue", description = "How long it takes to perform check.", unit = MetricUnits.MILLISECONDS)
   @Operation(summary = "Cancel Queue service ")
-  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = BookQueueRs.class)))
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON))
   public Response cancleQueue(@Valid CancelQueueRQ cancelQueueRQ) {
     queueService.cancelMyQueue(cancelQueueRQ);
     return Response.ok().build();

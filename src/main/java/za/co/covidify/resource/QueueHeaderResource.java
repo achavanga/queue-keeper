@@ -3,6 +3,7 @@ package za.co.covidify.resource;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.json.Json;
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -28,7 +29,7 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.logging.Logger;
 
-import za.co.covidify.model.QueueHeader;
+import za.co.covidify.request.to.CancelQueueHeaderRQ;
 import za.co.covidify.request.to.CreateQueueHeaderRQ;
 import za.co.covidify.response.to.QueueHeaderRS;
 import za.co.covidify.services.QueueHeaderService;
@@ -89,14 +90,26 @@ public class QueueHeaderResource {
   @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = CreateQueueHeaderRQ.class)))
   @Counted(name = "countCreateQueueHeader", description = "Counts how many times the createQueueHeader method has been invoked")
   @Timed(name = "timeGetCreateQueueHeader", description = "Times how long it takes to invoke the createQueueHeader method", unit = MetricUnits.MILLISECONDS)
-  public Response createQueueHeader(CreateQueueHeaderRQ queueHeader) {
-    return Response.ok(queueHeaderService.createQueueHeader(queueHeader)).status(201).build();
+  public Response createQueueHeader(@Valid CreateQueueHeaderRQ queueHeaderRq) {
+    return Response.ok(queueHeaderService.createQueueHeader(queueHeaderRq)).status(201).build();
   }
 
   @PUT
-  public Response updateQueueHeader(QueueHeader queueHeader) {
-    return Response.ok(queueHeaderService.updateQueueHeader(queueHeader)).status(200).build();
+  @Path("/company/cancel")
+  @Counted(name = "countPut_CancelQueueHeader", description = "How many calls have been performed")
+  @Timed(name = "timePut_CancelQueueHeader", description = "How long it takes to perform check.", unit = MetricUnits.MILLISECONDS)
+  @Operation(summary = "Cancel Queue Header service ")
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON))
+  public Response cancleQueue(@Valid CancelQueueHeaderRQ cancelQueueRQ) {
+    queueHeaderService.cancelQueueHeader(cancelQueueRQ);
+    return Response.ok().build();
   }
+  //
+  // @PUT
+  // public Response updateQueueHeader(QueueHeader queueHeader) {
+  // return
+  // Response.ok(queueHeaderService.updateQueueHeader(queueHeader)).status(200).build();
+  // }
 
   @Provider
   public static class ErrorMapper implements ExceptionMapper<Exception> {

@@ -2,6 +2,8 @@ package za.co.covidify.service.common;
 
 import static javax.transaction.Transactional.TxType.SUPPORTS;
 
+import java.util.Optional;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -90,6 +92,10 @@ public class CommonServiceUtil {
           throw new WebApplicationException("Invalid Address details request.", 422);
         }
     return address;
+  }
+
+  public Optional<Company> findCompanyWithQueueHeaderByCompnayId(Long id) {
+    return companyService.findCompanyWithQueueHeaderByCompnayId(id);
   }
 
   public QueueHeader processQueueHeader(QueueHeader queueHeader) {

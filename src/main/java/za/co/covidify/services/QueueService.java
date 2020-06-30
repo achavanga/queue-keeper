@@ -15,8 +15,6 @@ import javax.ws.rs.WebApplicationException;
 
 import org.jboss.logging.Logger;
 
-import za.co.covidify.exception.PersonException;
-import za.co.covidify.exception.QueueException;
 import za.co.covidify.model.Company;
 import za.co.covidify.model.Person;
 import za.co.covidify.model.Queue;
@@ -99,14 +97,14 @@ public class QueueService {
     if (entity != null) {
       if (entity.person.id == cancelQueueRQ.getPersornId()) {
         entity.queueEndDateTime = LocalDateTime.now();
-        entity.status = QueueStatus.CANCEL;
+        entity.status = QueueStatus.CANCELlED;
       }
       else {
-        throw new PersonException("Invalid customer details");
+        throw new WebApplicationException("Invalid customer details", 400);
       }
     }
     else {
-      throw new QueueException("Cannot find the queue. Please use a valid queue number.");
+      throw new WebApplicationException("Cannot find the queue. Please use a valid queue number.", 400);
     }
   }
 
