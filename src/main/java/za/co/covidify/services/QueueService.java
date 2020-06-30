@@ -82,6 +82,7 @@ public class QueueService {
     person.cellphoneNumber = bookQueueForOtherRQ.getCellphoneNumber();
 
     Address address = new Address();
+    address.addressLine = " ";
     address.locationPin = "000";
     address.postalCode = "00";
     person.address = address;
