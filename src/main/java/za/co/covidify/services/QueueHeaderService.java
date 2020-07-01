@@ -98,7 +98,7 @@ public class QueueHeaderService {
     if (entity != null) {
       entity.reasonForStopping = cancelQueueHeaderRQ.getCancelReasons();
       entity.queueEndDateTime = LocalDateTime.now();
-      entity.status = QueueStatus.CANCELlED;
+      entity.status = QueueStatus.CANCELLED;
     }
     else {
       throw new WebApplicationException("Invalid Queue details", 400);

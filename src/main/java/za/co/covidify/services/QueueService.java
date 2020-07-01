@@ -120,7 +120,7 @@ public class QueueService {
     if (entity != null) {
       if (entity.person.id == cancelQueueRQ.getPersornId()) {
         entity.queueEndDateTime = LocalDateTime.now();
-        entity.status = QueueStatus.CANCELlED;
+        entity.status = QueueStatus.CANCELLED;
       }
       else {
         throw new WebApplicationException("Invalid customer details", 400);
