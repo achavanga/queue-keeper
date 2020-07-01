@@ -1,30 +1,31 @@
 package za.co.covidify.response.to;
 
 import java.time.LocalDateTime;
-
-import javax.validation.constraints.NotNull;
+import java.util.List;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import lombok.Data;
-import za.co.covidify.request.to.CompanyRS;
 
 @Data
 @RegisterForReflection
-public class QueueHeaderRS {
+public class CompanyQueueRS {
 
   long id;
 
-  @NotNull(message = "Queue name cannot be empty")
   String queueName;
-
-  int queueIntervalsInMinutes;
 
   int numberAllowedAtATime;
 
-  Long totalInQueue = 0l;
+  Long totalInQueue;
+
+  List<CompnayQueueListRS> queue;
 
   LocalDateTime queueDate;
 
-  CompanyRS company;
+  long companyId;
+
+  String companyName;
+
+  String logo = "";
 
 }

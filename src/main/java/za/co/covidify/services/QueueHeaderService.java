@@ -21,6 +21,7 @@ import za.co.covidify.model.User;
 import za.co.covidify.model.mapper.ModelMapper;
 import za.co.covidify.request.to.CancelQueueHeaderRQ;
 import za.co.covidify.request.to.CreateQueueHeaderRQ;
+import za.co.covidify.response.to.CompanyQueueRS;
 import za.co.covidify.response.to.QueueHeaderRS;
 import za.co.covidify.service.common.CommonServiceUtil;
 
@@ -44,8 +45,8 @@ public class QueueHeaderService {
     return ModelMapper.INSTANCE.toQueueHeaderRS(QueueHeader.findById(id));
   }
 
-  public List<QueueHeaderRS> findQueueHeaderByCompnayId(Long id) {
-    return ModelMapper.INSTANCE.toQueueHeaderRSs(QueueHeader.find("company.id = ?1", id).list());
+  public List<CompanyQueueRS> findQueueHeaderByCompnayId(Long id) {
+    return ModelMapper.INSTANCE.toCompanyQueueRSs(QueueHeader.find("company.id = ?1", id).list());
   }
 
   @Transactional(REQUIRED)

@@ -16,6 +16,7 @@ import za.co.covidify.model.QueueHeader;
 import za.co.covidify.model.User;
 import za.co.covidify.request.to.UserRQ;
 import za.co.covidify.response.to.AddressRS;
+import za.co.covidify.response.to.CompanyQueueRS;
 import za.co.covidify.response.to.CompanyRS;
 import za.co.covidify.response.to.PersonQueueRS;
 import za.co.covidify.response.to.PersonRS;
@@ -110,6 +111,20 @@ public interface ModelMapper {
       companyRSs.add(companyRS);
     }
     return companyRSs;
+  }
+
+  @Mapping(target = "companyId", source = "company.id")
+  @Mapping(target = "companyName", source = "company.companyName")
+  @Mapping(target = "logo", source = "company.logo")
+  CompanyQueueRS toCompanyQueueRS(QueueHeader queueHeader);
+
+  default List<CompanyQueueRS> toCompanyQueueRSs(List<QueueHeader> queueHeaders) {
+    List<CompanyQueueRS> companyQueueRSs = new ArrayList<>();
+    for (QueueHeader queueHeader : queueHeaders) {
+      CompanyQueueRS companyQueueRS = toCompanyQueueRS(queueHeader);
+      companyQueueRSs.add(companyQueueRS);
+    }
+    return companyQueueRSs;
   }
 
 }
