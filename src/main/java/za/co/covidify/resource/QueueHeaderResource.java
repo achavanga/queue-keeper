@@ -31,6 +31,7 @@ import org.jboss.logging.Logger;
 
 import za.co.covidify.request.to.CancelQueueHeaderRQ;
 import za.co.covidify.request.to.CreateQueueHeaderRQ;
+import za.co.covidify.response.to.CompanyQueueRS;
 import za.co.covidify.response.to.QueueHeaderRS;
 import za.co.covidify.services.QueueHeaderService;
 
@@ -58,7 +59,7 @@ public class QueueHeaderResource {
   @GET
   @Path("/company/{id}")
   @Operation(summary = "Returns all the QueueHeaders from the database")
-  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = QueueHeaderRS.class, type = SchemaType.ARRAY)))
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = CompanyQueueRS.class, type = SchemaType.ARRAY)))
   @APIResponse(responseCode = "204", description = "No QueueHeaders found")
   @Counted(name = "countGetAllQueueHeadersByCo", description = "Counts how many times the getAllQueueHeader method has been invoked")
   @Timed(name = "timeGetAllQueueHeadersByCo", description = "Times how long it takes to invoke the getAllQueueHeaders method", unit = MetricUnits.MILLISECONDS)
