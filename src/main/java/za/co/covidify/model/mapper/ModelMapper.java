@@ -18,6 +18,7 @@ import za.co.covidify.request.to.UserRQ;
 import za.co.covidify.response.to.AddressRS;
 import za.co.covidify.response.to.CompanyQueueRS;
 import za.co.covidify.response.to.CompanyRS;
+import za.co.covidify.response.to.CompnayQueueListRS;
 import za.co.covidify.response.to.PersonQueueRS;
 import za.co.covidify.response.to.PersonRS;
 import za.co.covidify.response.to.QueueHeaderRS;
@@ -113,6 +114,11 @@ public interface ModelMapper {
     return companyRSs;
   }
 
+  @Mapping(target = "name", source = "person.name")
+  @Mapping(target = "surname", source = "person.surname")
+  @Mapping(target = "personId", source = "person.id")
+  CompnayQueueListRS toCompnayQueueListRS(Queue queue);
+
   @Mapping(target = "companyId", source = "company.id")
   @Mapping(target = "companyName", source = "company.companyName")
   @Mapping(target = "logo", source = "company.logo")
@@ -122,6 +128,12 @@ public interface ModelMapper {
     List<CompanyQueueRS> companyQueueRSs = new ArrayList<>();
     for (QueueHeader queueHeader : queueHeaders) {
       CompanyQueueRS companyQueueRS = toCompanyQueueRS(queueHeader);
+      List<CompnayQueueListRS> compnayQueueListRSs = new ArrayList<>();
+      for (Queue queue : queueHeader.queue) {
+        CompnayQueueListRS compnayQueueListRS = toCompnayQueueListRS(queue);
+        compnayQueueListRSs.add(compnayQueueListRS);
+      }
+      companyQueueRS.setQueue(compnayQueueListRSs);
       companyQueueRSs.add(companyQueueRS);
     }
     return companyQueueRSs;
