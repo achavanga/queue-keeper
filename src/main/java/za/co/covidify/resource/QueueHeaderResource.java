@@ -101,6 +101,8 @@ public class QueueHeaderResource {
   @Timed(name = "timePut_CancelQueueHeader", description = "How long it takes to perform check.", unit = MetricUnits.MILLISECONDS)
   @Operation(summary = "Cancel Queue Header service ")
   @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON))
+  @APIResponse(responseCode = "400", description = "The request has not been applied because of invalid input parameters.", content = @Content(mediaType = "application/json"))
+  @APIResponse(responseCode = "500", description = "Internal Server Error. The service call has not succeeded. The string in the body may contain the details.", content = @Content(mediaType = "application/json"))
   public Response cancleQueue(@Valid CancelQueueHeaderRQ cancelQueueRQ) {
     queueHeaderService.cancelQueueHeader(cancelQueueRQ);
     return Response.ok().build();
