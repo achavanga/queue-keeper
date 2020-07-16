@@ -12,6 +12,8 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.jboss.logging.Logger;
 
@@ -163,4 +165,18 @@ public class QueueService {
   public void confirmMyQueue(@Valid CancelQueueRQ cancelQueueRQ) {
     Queue.update("status = 'ACTIVE'  where id = ?1 and person.id = ?2", cancelQueueRQ.getQueueId(), cancelQueueRQ.getPersornId());
   }
+
+  @Transactional(REQUIRED)
+  public Response verifyMyQueue(long companyId, long queueId) {
+    Optional<Queue> queue =
+        Queue.find("FROM Queue q INNER JOIN FETCH q.queueHeader qh WHERE qh.status='ACTIVE' and q.id = ?1 and qh.company.id = ?2 ", queueId, companyId)
+            .firstResultOptional();
+    if (queue.isPresent())
+      return Response.ok(true).build();
+    else {
+      return Response.status(Status.NO_CONTENT).entity(false).build();
+    }
+
+  }
+
 }

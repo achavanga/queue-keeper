@@ -4,6 +4,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.json.Json;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -11,6 +12,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -134,6 +136,22 @@ public class QueueResource {
   public Response confirmQueue(@Valid CancelQueueRQ cancelQueueRQ) {
     queueService.confirmMyQueue(cancelQueueRQ);
     return Response.ok().build();
+  }
+
+  // verifyMyQueue
+  @GET
+  @Path("/verify/")
+  @Operation(summary = "Returns a Person Queues for a given Person identifier")
+  @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Boolean.class)))
+  @APIResponse(responseCode = "204", description = "The Person Queue is not found for a given identifier")
+  @APIResponse(responseCode = "400", description = "The request has not been applied because of invalid input parameters.", content = @Content(mediaType = "application/json"))
+  @APIResponse(responseCode = "401", description = "The request has not been applied because it lacks valid authentication credentials for the target resource.", content = @Content(mediaType = "application/json"))
+  @APIResponse(responseCode = "500", description = "Internal Server Error. The service call has not succeeded. The string in the body may contain the details.", content = @Content(mediaType = "application/json"))
+  @Counted(name = "countGetPersonQueue", description = "Counts how many times the getPersonQueue method has been invoked")
+  @Timed(name = "timeGetPersonQueue", description = "Times how long it takes to invoke the getPersonQueue method", unit = MetricUnits.MILLISECONDS)
+  public Response verifyMyQueue(@QueryParam("companyId") @NotNull(message = "Company Id cannot be null") Long companyId,
+      @QueryParam("queueId") @NotNull(message = "Queue Id cannot be null") Long queueId) {
+    return queueService.verifyMyQueue(companyId, queueId);
   }
 
   @Provider

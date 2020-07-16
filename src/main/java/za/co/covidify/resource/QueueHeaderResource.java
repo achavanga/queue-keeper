@@ -107,12 +107,7 @@ public class QueueHeaderResource {
     queueHeaderService.cancelQueueHeader(cancelQueueRQ);
     return Response.ok().build();
   }
-  //
-  // @PUT
-  // public Response updateQueueHeader(QueueHeader queueHeader) {
-  // return
-  // Response.ok(queueHeaderService.updateQueueHeader(queueHeader)).status(200).build();
-  // }
+
 
   @Provider
   public static class ErrorMapper implements ExceptionMapper<Exception> {
