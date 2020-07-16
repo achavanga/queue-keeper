@@ -141,7 +141,7 @@ public class QueueResource {
   // verifyMyQueue
   @GET
   @Path("/verify/")
-  @Operation(summary = "Returns a Person Queues for a given Person identifier")
+  @Operation(summary = "Verify Queues by queue id and company id ")
   @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Boolean.class)))
   @APIResponse(responseCode = "204", description = "The Queue is not found for a given identifier")
   @APIResponse(responseCode = "400", description = "The request has not been applied because of invalid input parameters.", content = @Content(mediaType = "application/json"))
