@@ -143,12 +143,12 @@ public class QueueResource {
   @Path("/verify/")
   @Operation(summary = "Returns a Person Queues for a given Person identifier")
   @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Boolean.class)))
-  @APIResponse(responseCode = "204", description = "The Person Queue is not found for a given identifier")
+  @APIResponse(responseCode = "204", description = "The Queue is not found for a given identifier")
   @APIResponse(responseCode = "400", description = "The request has not been applied because of invalid input parameters.", content = @Content(mediaType = "application/json"))
   @APIResponse(responseCode = "401", description = "The request has not been applied because it lacks valid authentication credentials for the target resource.", content = @Content(mediaType = "application/json"))
   @APIResponse(responseCode = "500", description = "Internal Server Error. The service call has not succeeded. The string in the body may contain the details.", content = @Content(mediaType = "application/json"))
-  @Counted(name = "countGetPersonQueue", description = "Counts how many times the getPersonQueue method has been invoked")
-  @Timed(name = "timeGetPersonQueue", description = "Times how long it takes to invoke the getPersonQueue method", unit = MetricUnits.MILLISECONDS)
+  @Counted(name = "countVerfiyQueue", description = "Counts how many times the Verify Queue method has been invoked")
+  @Timed(name = "timeVerifyQueue", description = "Times how long it takes to invoke the Verify Queue method", unit = MetricUnits.MILLISECONDS)
   public Response verifyMyQueue(@QueryParam("companyId") @NotNull(message = "Company Id cannot be null") Long companyId,
       @QueryParam("queueId") @NotNull(message = "Queue Id cannot be null") Long queueId) {
     return queueService.verifyMyQueue(companyId, queueId);
