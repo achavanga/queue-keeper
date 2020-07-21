@@ -121,6 +121,7 @@ public class QueueService {
     Queue entity = Queue.findById(cancelQueueRQ.getQueueId());
     if (entity != null) {
       if (entity.person.id == cancelQueueRQ.getPersornId()) {
+        QueueHeader.update("totalInQueue = totalInQueue - 1  where totalInQueue > 0 and id = ?1", entity.queueHeader.id);
         entity.queueEndDateTime = LocalDateTime.now();
         entity.status = QueueStatus.CANCELLED;
       }
