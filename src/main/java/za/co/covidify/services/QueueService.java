@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response.Status;
 
 import org.jboss.logging.Logger;
 
+import io.quarkus.panache.common.Page;
 import za.co.covidify.model.Address;
 import za.co.covidify.model.Company;
 import za.co.covidify.model.Person;
@@ -178,6 +179,11 @@ public class QueueService {
       return Response.status(Status.NO_CONTENT).entity(false).build();
     }
 
+  }
+
+  public List<Queue> getQueueReadyForService(int size) {
+    List<Queue> queues = Queue.find("status", QueueStatus.CREATED).page(Page.ofSize(size)).list();
+    return queues;
   }
 
 }
